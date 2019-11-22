@@ -1,0 +1,10 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: cloue-centre-server
+  cloud:
+    nacos:
+      discovery:
+        # nacos 地址
+        server-addr: 127.0.0.1:8848
