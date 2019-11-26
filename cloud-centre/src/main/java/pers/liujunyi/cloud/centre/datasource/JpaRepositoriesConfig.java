@@ -2,6 +2,7 @@ package pers.liujunyi.cloud.centre.datasource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -22,7 +23,9 @@ import java.sql.SQLException;
  * 文件描述: 默认数据源 主库持久化配置
  * 公 司:
  * 内容摘要:
- * 其他说明:  @EnableTransactionManagement  开启注解事物   @EnableJpaRepositories 开启JPA存储库扫描
+ * 其他说明:
+ *            @EntityScan 扫描实体类位置
+ *            @EnableTransactionManagement  开启注解事物   @EnableJpaRepositories 开启JPA存储库扫描
  *            EnableJpaRepositories 和 EnableMongoRepositories 不能在同一包下面
  *            @EntityScan 配置 实体类所在的路径  解决： Not a managed type:
  * 完成日期:2019年01月17日
@@ -31,6 +34,7 @@ import java.sql.SQLException;
  * @author ljy
  */
 @Configuration
+@EntityScan(basePackages = {"pers.liujunyi.cloud.centre.entity", "pers.liujunyi.cloud.security.entity"})
 @EnableJpaRepositories(basePackages = {"pers.liujunyi.cloud.centre.repository.jpa", "pers.liujunyi.cloud.security.repository.jpa"})
 @EnableMongoRepositories(basePackages = {"pers.liujunyi.cloud.centre.repository.mongo",  "pers.liujunyi.cloud.security.repository.mongo"})
 @EnableTransactionManagement(proxyTargetClass = true)
