@@ -19,8 +19,9 @@ import pers.liujunyi.cloud.common.repository.mongo.BaseMongoRepository;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
 import pers.liujunyi.cloud.common.service.impl.BaseMongoServiceImpl;
-import pers.liujunyi.cloud.common.util.DictUtil;
 import pers.liujunyi.cloud.common.util.DozerBeanMapperUtil;
+import pers.liujunyi.cloud.common.util.RemoteCloudUtil;
+import pers.liujunyi.cloud.dict.util.DictUtil;
 import pers.liujunyi.cloud.security.entity.organizations.Organizations;
 import pers.liujunyi.cloud.security.entity.user.UserAccounts;
 import pers.liujunyi.cloud.security.service.organizations.StaffOrgMongoService;
@@ -52,6 +53,8 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
     private UserAccountsMongoService userAccountsMongoService;
     @Autowired
     private DictUtil dictUtil;
+    @Autowired
+    private RemoteCloudUtil remoteCloudUtil;
     @Autowired
     private StaffOrgMongoService staffOrgMongoService;
 
@@ -89,7 +92,7 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
             List<Long> userIds =  searchPageResults.stream().map(UserDetailsInfo::getId).distinct().collect(Collectors.toList());
             // 获取行政区划
             List<Long> districtList = searchPageResults.stream().map(UserDetailsInfo::getDistrict).distinct().collect(Collectors.toList());
-            Map<Long, String> districtMap = this.dictUtil.getAreaNameToMap(districtList);
+            Map<Long, String> districtMap = this.remoteCloudUtil.getAreaNameToMap(districtList);
             // 获取组织机构信息
             Map<Long, List<Organizations>> orgInfoMap = this.staffOrgMongoService.getOrgInfoByStaffIdIn(userIds);
             searchPageResults.stream().forEach(item -> {
@@ -139,7 +142,7 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
             dictCodeList.add(DictConstant.STAFF_POSITION);
             Map<String, Map<String, String>> dictMap = this.dictUtil.getDictNameToMapList(dictCodeList);
             // 获取行政区划
-            String district = this.dictUtil.getAreaName(detailsInfoVo.getDistrict());
+            String district = this.remoteCloudUtil.getAreaName(detailsInfoVo.getDistrict());
             // 获取账户信息
             UserAccounts userAccounts = this.userAccountsMongoService.getOne(detailsInfoVo.getStaffAccountsId());
             // 获取组织机构信息

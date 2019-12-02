@@ -133,7 +133,7 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
     @Override
     public ResultInfo syncDataToMongo() {
         // 先同步账户信息
-        this.userAccountsService.userAccountsSyncDataToElasticsearch();
+        this.userAccountsService.userAccountsSyncDataToMongo();
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         List<UserDetailsInfo> list = this.userDetailsInfoRepository.findAll(sort);
         if (!CollectionUtils.isEmpty(list)) {
@@ -163,7 +163,7 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
             this.userDetailsInfoMongoRepository.deleteAll();
         }
         // 同步人员机构
-        this.staffOrgService.syncDataToElasticsearch();
+        this.staffOrgService.syncDataToMongo();
         return ResultUtil.success();
     }
 
@@ -223,7 +223,7 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
             userAccounts.setUserPassword(record.getMobilePhone());
             userAccounts.setRegisteredSource((byte) 1);
             userAccounts.setUserCategory(Constant.USER_CATEGORY_STAFF);
-            userAccounts.setLessee(record.getLessee());
+            userAccounts.setTenementId(record.getTenementId());
             return this.userAccountsService.saveRecord(userAccounts);
         } else {
             UserAccountsUpdateDto userAccountsUpdate = new UserAccountsUpdateDto();
@@ -250,7 +250,7 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
         staffOrg.setFullParent(record.getStaffFullParent());
         staffOrg.setOrgId(record.getStaffOrgId());
         staffOrg.setOrgNumber(record.getStaffOrgNumber());
-        staffOrg.setLessee(record.getLessee());
+        staffOrg.setTenementId(record.getTenementId());
         List<Long> staffIdList = new CopyOnWriteArrayList<>();
         staffIdList.add(record.getId());
         this.staffOrgService.saveRecord(staffOrg, staffIdList);

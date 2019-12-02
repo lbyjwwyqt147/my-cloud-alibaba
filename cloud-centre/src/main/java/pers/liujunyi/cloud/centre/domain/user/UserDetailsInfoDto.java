@@ -33,7 +33,7 @@ public class UserDetailsInfoDto extends BaseDto {
     @ApiModelProperty(value = "员工编号")
     @NotBlank(message = "员工编号 必须填写")
     @Length(min = 1, max = 20, message = "员工编号 最多可以输入20个字符")
-    @Pattern(regexp = RegexpUtils.ALNUM_CODE_REGEXP, message = "员工编号 " + RegexpUtils.ALNUM_CODE_MSG)
+    @Pattern(regexp = RegexpUtils.CODE_REGEXP, message = "员工编号 " + RegexpUtils.CODE_MSG)
     private String staffNumber;
 
     /** 员工帐号 */
@@ -43,13 +43,13 @@ public class UserDetailsInfoDto extends BaseDto {
     @ApiModelProperty(value = "真实姓名")
     @NotBlank(message = "真实姓名 必须填写")
     @Length(min = 1, max = 32, message = "真实姓名 最多可以输入32个字符")
-    @Pattern(regexp = RegexpUtils.ALNUM_NAME_REGEXP, message = "真实姓名 " + RegexpUtils.ALNUM_NAME_MSG)
+    @Pattern(regexp = RegexpUtils.NAME_REGEXP, message = "真实姓名 " + RegexpUtils.NAME_MSG)
     private String staffName;
 
     /** 员工昵称 */
     @ApiModelProperty(value = "昵称")
     @Length(min = 0, max = 32, message = "昵称 最多可以输入32个字符")
-    @Pattern(regexp = RegexpUtils.ALNUM_NAME_REGEXP, message = "昵称 " + RegexpUtils.ALNUM_NAME_MSG)
+    @Pattern(regexp = RegexpUtils.NAME_REGEXP, message = "昵称 " + RegexpUtils.NAME_MSG)
     private String staffNickName;
 
     /** 性别 0:男  1:女 */
@@ -95,7 +95,7 @@ public class UserDetailsInfoDto extends BaseDto {
     /** 所在行政区街道 */
     @ApiModelProperty(value = "所在行政区街道")
     @Length(min = 0, max = 50, message = "街道 最多可以输入50个字符")
-    @Pattern(regexp = RegexpUtils.ALNUM_NAME_REGEXP, message = "街道 " + RegexpUtils.ALNUM_NAME_MSG)
+    @Pattern(regexp = RegexpUtils.NAME_REGEXP, message = "街道 " + RegexpUtils.NAME_MSG)
     private String street;
 
     /**  身份证号  */
