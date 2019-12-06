@@ -22,7 +22,7 @@ data:
       /api/user/login,
       /api/v1/out,
       /api/v1/user/out,
-      /api/v1/verify/ignore/**,
+      /api/v1/ignore/**,
       /api/v1/table/**
 
 spring:
@@ -121,12 +121,17 @@ spring:
       repositories:
         enabled: false  # true 会出现 Spring Data Redis - Could not safely identify store assignment for repository candidate interface pers.liujunyi.cloud.photo.repository.jpa.album.AlbumRepository.
     mongodb:
-      host: 101.132.136.225
-      port: 27017
-      username: admin
-      password: admin
+      uri: mongodb://101.132.136.225:27017,101.132.136.225:27018/cloud-centre?replicaSet=rs
+      #host: 101.132.136.225:27017,101.132.136.225:27018
+      #port: 27017
+      #username: root
+      #password: root
+      #业务数据库
       database: cloud-centre
+      # 副本集
+      replica-set: rs
       always-use-m-beans: false
+      #认证授权的数据库
       authentication-database: admin
       connect-timeout: 10000
       heartbeat-connect-timeout: 20000
@@ -135,19 +140,23 @@ spring:
       local-threshold: 15
       max-connection-idel-time: 0
       max-connection-life-time: 0
+      #每个主机的连接数
       max-connections-per-host: 100
       max-wait-time: 120000
       min-connections-per-host: 10
       min-heartbeat-frequency: 500
-      replica-set: rs0
       server-selection-timeout: 30000
       socket-keep-alive: false
+      #控制是否在一个连接时，系统会自动重试
+      auto-connect-retry: true
       socket-timeout: 0
       ssl-enabled: false
       ssl-invalid-host-name-allowed: false
+      #线程队列数，它以上面connectionsPerHost值相乘的结果就是线程队列最大值
       threads-allowed-to-block-for-connection-multiplier: 5
       auto-index-creation: false
-
+      where-id-field: _id
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
 
   # redis 配置
   redis:

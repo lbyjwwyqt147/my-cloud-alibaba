@@ -30,7 +30,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-@Document(collection = "userDetailsInfo")
+@Document(collection = "user_details_info")
 @DynamicInsert
 @DynamicUpdate
 @Table(appliesTo = "user_details_info", comment = "用户详细档案表")

@@ -92,12 +92,12 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
     public ResultInfo updateStatus(Byte status, List<Long> ids, List<Long> userIds, String putParams) {
         int count = this.userDetailsInfoRepository.setStaffStatusByIds(status, new Date(), ids);
         if (count > 0) {
-            Map<String, Map<String, Object>> sourceMap = new ConcurrentHashMap<>();
+            Map<Long, Map<String, Object>> sourceMap = new ConcurrentHashMap<>();
             Map<String, Object> docDataMap = new HashMap<>();
             docDataMap.put("staffStatus", status);
             docDataMap.put("updateTime", System.currentTimeMillis());
             ids.stream().forEach(item -> {
-                sourceMap.put(String.valueOf(item), docDataMap);
+                sourceMap.put(item, docDataMap);
             });
             super.updateMongoDataByIds(sourceMap);
             this.userAccountsService.updateStatus(status.byteValue() == Constant.ENABLE_STATUS.byteValue() ? Constant.ENABLE_STATUS : Constant.DISABLE_STATUS, userIds, putParams);
@@ -171,12 +171,12 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
     public ResultInfo setPortrait(Long id, String portrait, Long portraitId) {
         int count = this.userDetailsInfoRepository.setPortrait(id, portrait, portraitId, new Date());
         if (count > 0) {
-            Map<String, Map<String, Object>> sourceMap = new ConcurrentHashMap<>();
+            Map<Long, Map<String, Object>> sourceMap = new ConcurrentHashMap<>();
             Map<String, Object> docDataMap = new HashMap<>();
             docDataMap.put("userPortrait", portrait);
             docDataMap.put("userPortraitId", portraitId);
             docDataMap.put("updateTime", System.currentTimeMillis());
-            sourceMap.put(id.toString(), docDataMap);
+            sourceMap.put(id, docDataMap);
             super.updateMongoDataByIds(sourceMap);
             return ResultUtil.success();
         }
