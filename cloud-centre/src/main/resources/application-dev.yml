@@ -18,12 +18,13 @@ data:
     # 不需要权限认证的资源
     antMatchers:
       /oauth/**,
-      /api/v1/user/login,
+      /api/*/user/login,
       /api/user/login,
-      /api/v1/out,
-      /api/v1/user/out,
-      /api/v1/ignore/**,
-      /api/v1/table/**
+      /api/*/out,
+      /api/*/user/out,
+      /api/*/ignore/**,
+      /api/*/table/**,
+      /api/*/tree/**
 
 spring:
   datasource:

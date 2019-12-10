@@ -17,7 +17,6 @@ import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /***
@@ -56,27 +55,6 @@ public class UserDetailsInfoController extends BaseController {
         return this.userDetailsInfoService.saveRecord(param);
     }
 
-    /**
-     * 单条删除数据
-     *
-     * @param id
-     * @param userId
-     * @return
-     */
-    @ApiOperation(value = "单条删除数据")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
-            @ApiImplicitParam(name = "userId", value = "userId",  required = true, dataType = "Long"),
-            @ApiImplicitParam(name = "id", value = "id",  required = true, dataType = "Long")
-
-    })
-    @DeleteMapping(value = "verify/staff/d")
-    @ApiVersion(1)
-    public ResultInfo singleDelete(@Valid @NotNull(message = "id 必须填写")
-                                       @RequestParam(name = "id", required = true) Long id, @NotNull(message = "userId 必须填写")
-    @RequestParam(name = "userId", required = true) Long userId) {
-        return this.userDetailsInfoService.deleteSingle(id, userId);
-    }
 
     /**
      * 批量删除
@@ -126,7 +104,7 @@ public class UserDetailsInfoController extends BaseController {
             @ApiImplicitParam(name = "status", value = "status",  required = true, dataType = "integer"),
             @ApiImplicitParam(name = "otherIds", value = "账户id",  required = true, dataType = "integer")
     })
-    @PutMapping(value = "verify/staff/p")
+    @PutMapping(value = "verify/staff/p/b")
     @ApiVersion(1)
     public ResultInfo updateDataStatus(@Valid IdParamDto param ) {
         return this.userDetailsInfoService.updateStatus(param.getStatus(), param.getIdList(), param.getOtherIdList(), param.getPutParams());
@@ -193,7 +171,7 @@ public class UserDetailsInfoController extends BaseController {
             @ApiImplicitParam(name = "portrait", value = "头像地址", paramType = "query",   required = true, dataType = "String"),
             @ApiImplicitParam(name = "portraitId", value = "头像ID", paramType = "query",   required = true, dataType = "Long")
     })
-    @PutMapping(value = "verify/staff/s/portrait")
+    @PutMapping(value = "ignore/staff/p/portrait")
     @ApiVersion(1)
     public ResultInfo setPortrait(Long id, String portrait, Long portraitId) {
         return this.userDetailsInfoService.setPortrait(id, portrait, portraitId);
@@ -217,7 +195,7 @@ public class UserDetailsInfoController extends BaseController {
             @ApiImplicitParam(name = "dimissionReason", value = "离职原因", paramType = "query",   required = true, dataType = "String"),
             @ApiImplicitParam(name = "dataVersion", value = "数据版本号", paramType = "query",   required = true, dataType = "Long")
     })
-    @PutMapping(value = "verify/staff/s/dimission")
+    @PutMapping(value = "verify/staff/p/dimission")
     @ApiVersion(1)
     public ResultInfo setCurDimissionInfo(Long id, Long userId, Date date, String dimissionReason, Long dataVersion) {
         return this.userDetailsInfoService.setCurDimissionInfo(id, userId, date, dimissionReason, dataVersion);
