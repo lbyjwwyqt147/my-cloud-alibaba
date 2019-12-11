@@ -90,7 +90,7 @@ public class UserDetailsInfoServiceImpl extends BaseJpaMongoServiceImpl<UserDeta
 
     @Override
     public ResultInfo updateStatus(Byte status, List<Long> ids, List<Long> userIds, String putParams) {
-        int count = this.userDetailsInfoRepository.setStaffStatusByIds(status, new Date(), ids);
+        int count = this.userDetailsInfoRepository.setUserStatusByIds(status, new Date(), ids);
         if (count > 0) {
             Map<Long, Map<String, Object>> sourceMap = new ConcurrentHashMap<>();
             Map<String, Object> docDataMap = new HashMap<>();

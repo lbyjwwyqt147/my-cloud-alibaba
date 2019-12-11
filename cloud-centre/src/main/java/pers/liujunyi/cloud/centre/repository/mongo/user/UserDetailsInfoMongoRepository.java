@@ -20,16 +20,16 @@ public interface UserDetailsInfoMongoRepository extends BaseMongoRepository<User
     /**
      * 根据 帐号id 获取员工详细数据
      * @param staffAccountsId
-     * @param  staffStatus   0：正常  1：冻结  2：离职
+     * @param  userStatus   0：正常  1：冻结  2：离职
      * @return
      */
-    UserDetailsInfo findFirstByUserAccountsIdAndStaffStatus(Long staffAccountsId, Byte staffStatus);
+    UserDetailsInfo findFirstByUserAccountsIdAndUserStatus(Long staffAccountsId, Byte userStatus);
 
     /**
      * 根据 帐号id 获取员工详细数据
-     * @param staffAccountsId
+     * @param userAccountsId
      * @return
      */
-    UserDetailsInfo findFirstByUserAccountsId(Long staffAccountsId);
+    UserDetailsInfo findFirstByUserAccountsId(Long userAccountsId);
 
 }

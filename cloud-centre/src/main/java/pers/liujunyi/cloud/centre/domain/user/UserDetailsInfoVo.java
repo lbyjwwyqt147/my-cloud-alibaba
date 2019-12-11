@@ -23,7 +23,7 @@ public class UserDetailsInfoVo extends UserDetailsInfoDto {
 
     private static final long serialVersionUID = 562898741873474891L;
 
-    @ApiModelProperty(value = "职务")
+    @ApiModelProperty(value = "职位")
     private String userPositionText;
 
     /** 所在行政区街道 */

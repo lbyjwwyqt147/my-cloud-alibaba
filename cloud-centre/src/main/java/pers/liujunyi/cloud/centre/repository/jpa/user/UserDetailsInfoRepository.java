@@ -24,14 +24,14 @@ public interface UserDetailsInfoRepository extends BaseJpaRepository<UserDetails
 
     /**
      * 修改状态
-     * @param staffStatus  0：正常  1：冻结  2：离职
+     * @param userStatus  0：正常  1：冻结  2：离职
      * @param ids
      * @return
      */
     @Transactional(rollbackFor = {RuntimeException.class, Exception.class})
     @Modifying(clearAutomatically = true)
-    @Query(value = "update user_details_info u set u.staff_status = ?1, u.update_time = ?2 where u.id in (?3)", nativeQuery = true)
-    int setStaffStatusByIds(Byte staffStatus, Date updateTime, List<Long> ids);
+    @Query(value = "update user_details_info u set u.user_status = ?1, u.update_time = ?2 where u.id in (?3)", nativeQuery = true)
+    int setUserStatusByIds(Byte userStatus, Date updateTime, List<Long> ids);
 
     /**
      * 设置头像

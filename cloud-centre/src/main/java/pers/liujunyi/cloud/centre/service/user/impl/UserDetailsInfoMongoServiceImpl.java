@@ -65,7 +65,7 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
 
     @Override
     public UserDetailsInfo findFirstByUserAccountsIdAndStaffStatus(Long staffAccountsId, Byte staffStatus) {
-        return this.userDetailsInfoMongoRepository.findFirstByUserAccountsIdAndStaffStatus(staffAccountsId, staffStatus);
+        return this.userDetailsInfoMongoRepository.findFirstByUserAccountsIdAndUserStatus(staffAccountsId, staffStatus);
     }
 
     @Override

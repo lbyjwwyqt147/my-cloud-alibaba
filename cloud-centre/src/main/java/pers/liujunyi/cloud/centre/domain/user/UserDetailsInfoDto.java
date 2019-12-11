@@ -110,7 +110,7 @@ public class UserDetailsInfoDto extends BaseDto {
     /** 电子邮箱 */
     @ApiModelProperty(value = "电子邮箱")
     @Email(message = "电子邮箱格式错误")
-    @Length(min = 0, max = 65, message = "电子邮箱 最多可以输入60个字符")
+    @Length(min = 0, max = 65, message = "电子邮箱 最多可以输入65个字符")
     private String userEmail;
 
     /** 生日 */
@@ -127,7 +127,7 @@ public class UserDetailsInfoDto extends BaseDto {
     
     /** 个人介绍 */
     @ApiModelProperty(value = "个人介绍")
-    @Length(min = 0, max = 350, message = "个人简介 最多可以输入400个字符")
+    @Length(min = 0, max = 500, message = "个人简介 最多可以输入500个字符")
     private String userIntro;
 
     /** 状态：0：正常  1：冻结  2：离职 */
