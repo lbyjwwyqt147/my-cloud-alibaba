@@ -103,11 +103,11 @@ public class UserDetailsInfo extends BaseEntity {
 
     /** 个人介绍 */
     @Column(length = 500, columnDefinition="varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '个人介绍'")
-    private String staffIntro;
+    private String userIntro;
 
     /** 状态：0：正常  1：冻结  2：离职 */
     @Column(columnDefinition="tinyint(4) DEFAULT '0' COMMENT '状态：0：正常  1：冻结  2：离职'")
-    private Byte staffStatus;
+    private Byte userStatus;
 
     /** 头像 */
     @Column(columnDefinition="varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '头像'")
@@ -129,5 +129,9 @@ public class UserDetailsInfo extends BaseEntity {
     /** 在职年限 年月日 格式 */
     @Column(length = 10, columnDefinition="varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '在职年限 年月日 格式'")
     private String  workingYears;
+
+    /** 职位  */
+    @Column(columnDefinition=" bigint(20) DEFAULT NULL COMMENT '职位'")
+    private Long userPosition;
 
 }

@@ -85,10 +85,6 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
         List<UserDetailsInfo> searchPageResults =  this.mongoDbTemplate.find(searchQuery, UserDetailsInfo.class);
         List<UserDetailsInfoVo> resultDataList = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(searchPageResults)) {
-            // 获取数据字典值
-            List<String> dictCodeList = new LinkedList<>();
-            dictCodeList.add(DictConstant.STAFF_POSITION);
-            Map<String, Map<String, String>> dictMap = this.dictUtil.getDictNameToMapList(dictCodeList);
             List<Long> userIds =  searchPageResults.stream().map(UserDetailsInfo::getId).distinct().collect(Collectors.toList());
             // 获取行政区划
             List<Long> districtList = searchPageResults.stream().map(UserDetailsInfo::getDistrict).distinct().collect(Collectors.toList());
@@ -102,11 +98,10 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
                     if (!CollectionUtils.isEmpty(organizationsList)) {
                         Organizations organizations = organizationsList.get(0);
                         staffDetailsInfo.setStaffOrgName(organizations.getFullName());
-                        staffDetailsInfo.setStaffOrgId(organizations.getId());
+                        staffDetailsInfo.setOrgId(organizations.getId());
                     }
                 }
                 staffDetailsInfo.setAddressText(!CollectionUtils.isEmpty(districtMap) ? districtMap.get(item.getDistrict()) : "");
-                //staffDetailsInfo.setDataVersion(userAccountsMap.get(item.getStaffAccountsId()).getDataVersion());
                 staffDetailsInfo.setUserId(item.getUserAccountsId());
                 resultDataList.add(staffDetailsInfo);
             });
@@ -126,10 +121,6 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
         return null;
     }
 
-    @Override
-    public ResultInfo findById(Long id) {
-        return ResultUtil.success(this.getUserDetailsById(id));
-    }
 
     @Override
     public UserDetailsInfoVo getUserDetailsById(Long id) {
@@ -140,40 +131,26 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
             List<String> dictCodeList = new LinkedList<>();
             dictCodeList.add(DictConstant.STAFF_SKILL);
             dictCodeList.add(DictConstant.STAFF_POSITION);
-            Map<String, Map<String, String>> dictMap = this.dictUtil.getDictNameToMapList(dictCodeList);
             // 获取行政区划
             String district = this.remoteCloudUtil.getAreaName(detailsInfoVo.getDistrict());
             // 获取账户信息
-            UserAccounts userAccounts = this.userAccountsMongoService.getOne(detailsInfoVo.getStaffAccountsId());
+            UserAccounts userAccounts = this.userAccountsMongoService.getOne(detailsInfoVo.getUserAccountsId());
             // 获取组织机构信息
             List<Organizations> orgInfo = this.staffOrgMongoService.getOrgInfoByStaffId(id);
-            if (!CollectionUtils.isEmpty(dictMap)) {
-                Map<String, String> positionMap = dictMap.get(DictConstant.STAFF_POSITION);
-                detailsInfoVo.setStaffPositionText(!CollectionUtils.isEmpty(positionMap) ? positionMap.get(detailsInfoVo.getStaffPosition()) : "");
-                Map<String, String> skillMap = dictMap.get(DictConstant.STAFF_SKILL);
-                Set<String> skillBuffer =  new HashSet<>();
-                String[] skillList = detailsInfoVo.getSkill().split(",");
-                if (!CollectionUtils.isEmpty(skillMap)) {
-                    for (String skill : skillList) {
-                        skillBuffer.add(skillMap.get(skill));
-                    }
-                }
-                detailsInfoVo.setSkillText(StringUtils.join(skillBuffer, ","));
-            }
             if (!CollectionUtils.isEmpty(orgInfo)) {
                 Organizations organizations = orgInfo.get(0);
                 detailsInfoVo.setStaffOrgName(organizations.getFullName());
-                detailsInfoVo.setStaffOrgId(organizations.getId());
+                detailsInfoVo.setOrgId(organizations.getId());
             }
             if (StringUtils.isBlank(detailsInfoVo.getWorkingYears())) {
                 detailsInfoVo.setWorkingYears(CentreUtils.getWorkingYears(detailsInfoVo.getEntryDate(), detailsInfoVo.getDimissionDate()));
             }
-            if (detailsInfoVo.getBirthday() != null && detailsInfoVo.getStaffAge() == null) {
-                detailsInfoVo.setStaffAge(CentreUtils.getAge(detailsInfoVo.getBirthday()));
+            if (detailsInfoVo.getBirthday() != null && detailsInfoVo.getUserAge() == null) {
+                detailsInfoVo.setUserAge(CentreUtils.getAge(detailsInfoVo.getBirthday()));
             }
             detailsInfoVo.setAddressText(district + detailsInfoVo.getStreet());
             detailsInfoVo.setDataVersion(userAccounts.getDataVersion());
-            detailsInfoVo.setUserId(detailsInfoVo.getStaffAccountsId());
+            detailsInfoVo.setUserId(detailsInfoVo.getUserAccountsId());
             return detailsInfoVo;
         }
         return null;
@@ -181,7 +158,7 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
 
     @Override
     public List<Map<String, String>> staffSelect(UserDetailsInfoQueryDto query) {
-        query.setStaffStatus(Constant.ENABLE_STATUS);
+        query.setUserStatus(Constant.ENABLE_STATUS);
         List<Map<String, String>> result = new LinkedList<>();
         // 查询数据
         Query searchQuery = query.toSpecPageable(pageable);

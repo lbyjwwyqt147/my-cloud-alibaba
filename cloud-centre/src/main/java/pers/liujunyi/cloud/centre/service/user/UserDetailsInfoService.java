@@ -3,7 +3,7 @@ package pers.liujunyi.cloud.centre.service.user;
 import pers.liujunyi.cloud.centre.domain.user.UserDetailsInfoDto;
 import pers.liujunyi.cloud.centre.entity.user.UserDetailsInfo;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
-import pers.liujunyi.cloud.common.service.BaseService;
+import pers.liujunyi.cloud.common.service.BaseJpaMongoService;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  * @version 1.0
  * @author ljy
  */
-public interface UserDetailsInfoService extends BaseService<UserDetailsInfo, Long> {
+public interface UserDetailsInfoService extends BaseJpaMongoService<UserDetailsInfo, Long> {
 
     /**
      * 保存数据

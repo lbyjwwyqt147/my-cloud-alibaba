@@ -29,35 +29,35 @@ import java.util.Date;
 public class UserDetailsInfoDto extends BaseDto {
 
     private static final long serialVersionUID = -3568694500607340797L;
-    /** 员工编号 */
-    @ApiModelProperty(value = "员工编号")
-    @NotBlank(message = "员工编号 必须填写")
-    @Length(min = 1, max = 20, message = "员工编号 最多可以输入20个字符")
-    @Pattern(regexp = RegexpUtils.CODE_REGEXP, message = "员工编号 " + RegexpUtils.CODE_MSG)
-    private String staffNumber;
+    /** 用户编号 */
+    @ApiModelProperty(value = "用户编号")
+    @NotBlank(message = "编号 必须填写")
+    @Length(min = 1, max = 20, message = "编号 最多可以输入20个字符")
+    @Pattern(regexp = RegexpUtils.CODE_REGEXP, message = "编号 " + RegexpUtils.CODE_MSG)
+    private String userNumber;
 
-    /** 员工帐号 */
-    private Long staffAccountsId;
+    /** 用户帐号 */
+    private Long userAccountsId;
 
-    /** 员工真实姓名 */
+    /** 用户真实姓名 */
     @ApiModelProperty(value = "真实姓名")
     @NotBlank(message = "真实姓名 必须填写")
     @Length(min = 1, max = 32, message = "真实姓名 最多可以输入32个字符")
     @Pattern(regexp = RegexpUtils.NAME_REGEXP, message = "真实姓名 " + RegexpUtils.NAME_MSG)
-    private String staffName;
+    private String userFullName;
 
-    /** 员工昵称 */
+    /** 用户昵称 */
     @ApiModelProperty(value = "昵称")
     @Length(min = 0, max = 32, message = "昵称 最多可以输入32个字符")
     @Pattern(regexp = RegexpUtils.NAME_REGEXP, message = "昵称 " + RegexpUtils.NAME_MSG)
-    private String staffNickName;
+    private String userNickName;
 
     /** 性别 0:男  1:女 */
     @ApiModelProperty(value = "性别")
     @NotNull(message = "性别 必须选择")
     @Min(value = 0, message = "性别 值必须大于0")
     @Max(value = 127, message = "性别 最大值不能大于127")
-    private Byte staffSex;
+    private Byte userSex;
 
     /** 绑定的手机号 */
     @ApiModelProperty(value = "手机号")
@@ -66,19 +66,17 @@ public class UserDetailsInfoDto extends BaseDto {
     @Pattern(regexp = RegexpUtils.MOBILE_PHONE_REGEXP, message = RegexpUtils.MOBILE_PHONE_MSG)
     private String mobilePhone;
 
-    /** 员工类别   0：超级管理员 1：普通管理员  2：员工   */
-    @ApiModelProperty(value = "性别")
-    @NotNull(message = "类别 必须选择")
+    /** 用户类别   0：超级管理员 1：普通管理员 2：内部职工 3：普通用户   */
+    @ApiModelProperty(value = "用户类别")
+    @NotNull(message = "用户类别 必须选择")
     @Min(value = 0, message = "类别 值必须大于0")
     @Max(value = 127, message = "类别 最大值不能大于127")
-    private Byte staffCategory;
+    private Byte userCategory;
 
-    /** 员工职务   1: 摄影师 2：数码师（后期）  3：化妆师 等 */
-    @ApiModelProperty(value = "职务")
-    @NotNull(message = "职务 必须选择")
-    @Min(value = 0, message = "职务 值必须大于0")
-    @Max(value = 127, message = "职务 最大值不能大于127")
-    private Byte staffPosition;
+    /** 用户职位 */
+    @ApiModelProperty(value = "职位")
+    @NotNull(message = "职位 必须选择")
+    private Long userPosition;
 
     /** 所在省份 */
     @ApiModelProperty(value = "所在省份")
@@ -101,7 +99,7 @@ public class UserDetailsInfoDto extends BaseDto {
     /**  身份证号  */
     @ApiModelProperty(value = "身份证号")
     @Pattern(regexp = RegexpUtils.IDENTIFICATIONCARD_REGEXP, message =  RegexpUtils.IDENTIFICATIONCARD_MSG)
-    private String staffIdentiyCard;
+    private String userIdentiyCard;
 
     /** 入职日期 */
     @ApiModelProperty(value = "入职日期")
@@ -109,33 +107,11 @@ public class UserDetailsInfoDto extends BaseDto {
     @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date entryDate;
 
-    /** 员工联系电话 */
-    @ApiModelProperty(value = "联系电话")
-    @Length(min = 0, max = 11, message = "联系电话 位数为11位")
-    @Pattern(regexp = RegexpUtils.MOBILE_PHONE_REGEXP, message = RegexpUtils.MOBILE_PHONE_MSG)
-    private String staffPhone;
-
     /** 电子邮箱 */
     @ApiModelProperty(value = "电子邮箱")
     @Email(message = "电子邮箱格式错误")
-    @Length(min = 0, max = 60, message = "电子邮箱 最多可以输入60个字符")
-    private String staffEmail;
-
-    /** 联系QQ号 */
-    @ApiModelProperty(value = "QQ号")
-    @Length(min = 0, max = 13, message = "QQ号 最多可以输入13个字符")
-    @Pattern(regexp = RegexpUtils.POSITIVE_INTEGER_REGEXP, message = "QQ号" + RegexpUtils.POSITIVE_INTEGER_MSG)
-    private String staffQq;
-
-    /** 联系微信号 */
-    @ApiModelProperty(value = "微信号")
-    @Length(min = 0, max = 20, message = "微信号 最多可以输入20个字符")
-    private String staffWechat;
-
-    /** 微博 */
-    @ApiModelProperty(value = "新浪微博")
-    @Length(min = 0, max = 200, message = "微博 最多可以输入200个字符")
-    private String staffWeiBo;
+    @Length(min = 0, max = 65, message = "电子邮箱 最多可以输入60个字符")
+    private String userEmail;
 
     /** 生日 */
     @ApiModelProperty(value = "出生日期")
@@ -147,34 +123,24 @@ public class UserDetailsInfoDto extends BaseDto {
     @ApiModelProperty(value = "年龄")
     @Min(value = 10, message = "年龄 最小为10岁")
     @Max(value = 127, message = "年龄 不能大于127 岁")
-    private Byte staffAge;
-
-    /** 器材装备 */
-    @ApiModelProperty(value = "器材装备")
-    @Length(min = 0, max = 200, message = "器材装备 最多可以输入200个字符")
-    private String staffEquipment;
-
+    private Byte userAge;
+    
     /** 个人介绍 */
     @ApiModelProperty(value = "个人介绍")
     @Length(min = 0, max = 350, message = "个人简介 最多可以输入400个字符")
-    private String staffIntro;
+    private String userIntro;
 
     /** 状态：0：正常  1：冻结  2：离职 */
     @ApiModelProperty(value = "状态")
     @Min(value = 0, message = "状态 最小为0")
     @Max(value = 127, message = "状态 不能大于127")
-    private Byte staffStatus;
+    private Byte userStatus;
 
     /** 头像 */
-    private String staffPortrait;
+    private String userPortrait;
 
     /** 头像id  */
-    private Long staffPortraitId;
-
-    /** 技能 多个用;隔开 */
-    @ApiModelProperty(value = "技能 多个用;隔开")
-    @Length(min = 0, max = 20, message = "技能 最多可以输入20个字符")
-    private String skill;
+    private Long userPortraitId;
 
     /** 试用期 状态 1：试用期职工   2：正式职工 */
     private String probationStatus;
@@ -191,12 +157,10 @@ public class UserDetailsInfoDto extends BaseDto {
     private Long userId;
 
     /** 部门父id */
-    private String staffFullParent;
+    private String orgParentId;
     /** 部门id */
-    private Long staffOrgId;
+    private Long orgId;
     /** 部门编号 */
-    private String staffOrgNumber;
+    private String orgNumber;
 
-    /** 是否在网页展示 0：展示  1：不展示  */
-    private Byte display;
 }

@@ -58,12 +58,6 @@ public interface UserDetailsInfoMongoService extends BaseMongoService<UserDetail
      */
     UserDetailsInfoVo getStaffDetailsByUserAccountsId(Long staffAccountsId);
 
-    /**
-     * 根据 帐号id 获取员工详细数据
-     * @param id
-     * @return
-     */
-    ResultInfo findById(Long id);
 
     /**
      * 根据 id 获取员工详细数据

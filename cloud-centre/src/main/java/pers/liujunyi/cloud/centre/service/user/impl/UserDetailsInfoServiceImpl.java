@@ -1,9 +1,7 @@
 package pers.liujunyi.cloud.centre.service.user.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import pers.liujunyi.cloud.centre.domain.user.UserDetailsInfoDto;
 import pers.liujunyi.cloud.centre.entity.user.UserDetailsInfo;
 import pers.liujunyi.cloud.centre.repository.jpa.user.UserDetailsInfoRepository;
@@ -11,10 +9,10 @@ import pers.liujunyi.cloud.centre.repository.mongo.user.UserDetailsInfoMongoRepo
 import pers.liujunyi.cloud.centre.service.user.UserDetailsInfoService;
 import pers.liujunyi.cloud.centre.util.Constant;
 import pers.liujunyi.cloud.common.exception.ErrorCodeEnum;
-import pers.liujunyi.cloud.common.repository.jpa.BaseRepository;
+import pers.liujunyi.cloud.common.repository.jpa.BaseJpaRepository;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
-import pers.liujunyi.cloud.common.service.impl.BaseServiceImpl;
+import pers.liujunyi.cloud.common.service.impl.BaseJpaMongoServiceImpl;
 import pers.liujunyi.cloud.common.util.DozerBeanMapperUtil;
 import pers.liujunyi.cloud.common.util.UserContext;
 import pers.liujunyi.cloud.security.domain.user.UserAccountsDto;
@@ -23,7 +21,10 @@ import pers.liujunyi.cloud.security.entity.organizations.StaffOrg;
 import pers.liujunyi.cloud.security.service.organizations.StaffOrgService;
 import pers.liujunyi.cloud.security.service.user.UserAccountsService;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -39,7 +40,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author ljy
  */
 @Service
-public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo, Long> implements UserDetailsInfoService {
+public class UserDetailsInfoServiceImpl extends BaseJpaMongoServiceImpl<UserDetailsInfo, Long> implements UserDetailsInfoService {
 
     @Autowired
     private UserDetailsInfoRepository userDetailsInfoRepository;
@@ -50,7 +51,7 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
     @Autowired
     private StaffOrgService staffOrgService;
 
-    public UserDetailsInfoServiceImpl(BaseRepository<UserDetailsInfo, Long> baseRepository) {
+    public UserDetailsInfoServiceImpl(BaseJpaRepository<UserDetailsInfo, Long> baseRepository) {
         super(baseRepository);
     }
 
@@ -59,19 +60,18 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
     public ResultInfo saveRecord(UserDetailsInfoDto record) {
         // 先保存账户信息
         ResultInfo result = this.saveUserAccountRecord(record);
-        record.setStaffPhone(record.getMobilePhone());
         if (result.getSuccess()) {
-            if (record.getStaffCategory() == null) {
-                record.setStaffCategory((byte)2);
+            if (record.getUserCategory() == null) {
+                record.setUserCategory((byte)2);
             }
-            if (record.getStaffStatus() == null) {
-                record.setStaffStatus(Constant.ENABLE_STATUS);
+            if (record.getUserStatus() == null) {
+                record.setUserStatus(Constant.ENABLE_STATUS);
             }
             if (record.getId() != null) {
                 record.setUpdateTime(new Date());
                 record.setUpdateUserId(UserContext.currentUserId());
             } else {
-                record.setStaffAccountsId(Long.valueOf(result.getData().toString()));
+                record.setUserAccountsId(Long.valueOf(result.getData().toString()));
             }
             UserDetailsInfo userDetailsInfo = DozerBeanMapperUtil.copyProperties(record, UserDetailsInfo.class);
             UserDetailsInfo saveObj = this.userDetailsInfoRepository.save(userDetailsInfo);
@@ -132,38 +132,7 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
 
     @Override
     public ResultInfo syncDataToMongo() {
-        // 先同步账户信息
-        this.userAccountsService.userAccountsSyncDataToMongo();
-        Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        List<UserDetailsInfo> list = this.userDetailsInfoRepository.findAll(sort);
-        if (!CollectionUtils.isEmpty(list)) {
-            this.userDetailsInfoMongoRepository.deleteAll();
-            // 限制条数
-            int pointsDataLimit = 1000;
-            int size = list.size();
-            //判断是否有必要分批
-            if(pointsDataLimit < size){
-                //分批数
-                int part = size/pointsDataLimit;
-                for (int i = 0; i < part; i++) {
-                    //1000条
-                    List<UserDetailsInfo> partList = new LinkedList<>(list.subList(0, pointsDataLimit));
-                    //剔除
-                    list.subList(0, pointsDataLimit).clear();
-                    this.userDetailsInfoMongoRepository.saveAll(partList);
-                }
-                //表示最后剩下的数据
-                if (!CollectionUtils.isEmpty(list)) {
-                    this.userDetailsInfoMongoRepository.saveAll(list);
-                }
-            } else {
-                this.userDetailsInfoMongoRepository.saveAll(list);
-            }
-        } else {
-            this.userDetailsInfoMongoRepository.deleteAll();
-        }
-        // 同步人员机构
-        this.staffOrgService.syncDataToMongo();
+        super.syncDataMongoDb();
         return ResultUtil.success();
     }
 
@@ -216,10 +185,10 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
             UserAccountsDto userAccounts = new UserAccountsDto();
             userAccounts.setMobilePhone(record.getMobilePhone());
             userAccounts.setUserAccounts(record.getMobilePhone());
-            userAccounts.setUserMailbox(record.getStaffEmail());
-            userAccounts.setUserName(record.getStaffName());
-            userAccounts.setUserNickName(record.getStaffNickName());
-            userAccounts.setUserNumber(record.getStaffNumber());
+            userAccounts.setUserMailbox(record.getUserEmail());
+            userAccounts.setUserName(record.getUserFullName());
+            userAccounts.setUserNickName(record.getUserNickName());
+            userAccounts.setUserNumber(record.getUserNumber());
             userAccounts.setUserPassword(record.getMobilePhone());
             userAccounts.setRegisteredSource((byte) 1);
             userAccounts.setUserCategory(Constant.USER_CATEGORY_STAFF);
@@ -228,13 +197,13 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
         } else {
             UserAccountsUpdateDto userAccountsUpdate = new UserAccountsUpdateDto();
             userAccountsUpdate.setRegisteredSource((byte) 1);
-            userAccountsUpdate.setId(record.getStaffAccountsId());
+            userAccountsUpdate.setId(record.getUserAccountsId());
             userAccountsUpdate.setMobilePhone(record.getMobilePhone());
             userAccountsUpdate.setUserAccounts(record.getMobilePhone());
-            userAccountsUpdate.setUserMailbox(record.getStaffEmail());
-            userAccountsUpdate.setUserName(record.getStaffName());
-            userAccountsUpdate.setUserNickName(record.getStaffNickName());
-            userAccountsUpdate.setUserNumber(record.getStaffNumber());
+            userAccountsUpdate.setUserMailbox(record.getUserEmail());
+            userAccountsUpdate.setUserName(record.getUserFullName());
+            userAccountsUpdate.setUserNickName(record.getUserNickName());
+            userAccountsUpdate.setUserNumber(record.getUserNumber());
             userAccountsUpdate.setDataVersion(record.getDataVersion());
             return this.userAccountsService.updateUserAccountsInfo(userAccountsUpdate);
         }
@@ -247,9 +216,9 @@ public class UserDetailsInfoServiceImpl extends BaseServiceImpl<UserDetailsInfo,
     private void saveStaffOrg(UserDetailsInfoDto record) {
         this.staffOrgService.deleteByStaffId(record.getId());
         StaffOrg staffOrg = new StaffOrg();
-        staffOrg.setFullParent(record.getStaffFullParent());
-        staffOrg.setOrgId(record.getStaffOrgId());
-        staffOrg.setOrgNumber(record.getStaffOrgNumber());
+        staffOrg.setFullParent(record.getOrgParentId());
+        staffOrg.setOrgId(record.getOrgId());
+        staffOrg.setOrgNumber(record.getOrgNumber());
         staffOrg.setTenementId(record.getTenementId());
         List<Long> staffIdList = new CopyOnWriteArrayList<>();
         staffIdList.add(record.getId());

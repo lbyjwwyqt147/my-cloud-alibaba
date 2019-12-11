@@ -123,15 +123,15 @@ public class UserDetailsInfoController extends BaseController {
     @GetMapping(value = "table/staff/{id}")
     @ApiVersion(1)
     public ResultInfo findById(@PathVariable(name = "id") Long id) {
-        return this.userDetailsInfoMongoService.findById(id);
+        return  ResultUtil.success(this.userDetailsInfoMongoService.findById(id));
     }
 
     /**
-     * 员工下拉框数据
+     * 用户下拉框数据
      * @param query
      * @return
      */
-    @ApiOperation(value = "员工下拉框数据")
+    @ApiOperation(value = "用户下拉框数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
     })

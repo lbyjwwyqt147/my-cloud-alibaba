@@ -25,32 +25,39 @@ import pers.liujunyi.cloud.common.query.mongo.BaseMongoQuery;
 public class UserDetailsInfoQueryDto extends BaseMongoQuery {
     private static final long serialVersionUID = -1582195362858567940L;
 
-    /** 员工编号 */
-    @ApiModelProperty(value = "员工编号")
+    /**
+     * 编号
+     */
+    @ApiModelProperty(value = "编号")
     @QueryCondition(func = MatchType.like)
-    private String staffNumber;
+    private String userNumber;
 
-    /** 员工真实姓名 */
+    /**
+     * 真实姓名
+     */
     @ApiModelProperty(value = "员工姓名")
     @QueryCondition(func = MatchType.like)
-    private String staffName;
+    private String userFullName;
 
-    /** 手机号 */
+    /**
+     * 手机号
+     */
     @ApiModelProperty(value = "手机号")
     @QueryCondition()
     private String mobilePhone;
 
-    /** 员工职务   1: 摄影师 2：数码师（后期）  3：化妆师 等 */
+    /**
+     * 职位
+     */
     @ApiModelProperty(value = "职务")
     @QueryCondition()
-    private Byte staffPosition;
+    private Byte userPosition;
 
-    /** 状态：0：正常  1：禁用  2：离职 */
+    /**
+     * 状态：0：正常  1：禁用  2：离职
+     */
     @ApiModelProperty(value = "状态")
     @QueryCondition()
-    private Byte staffStatus;
+    private Byte userStatus;
 
-    /** 是否在网页展示 0：展示  1：不展示  */
-    @QueryCondition()
-    private Byte display;
 }

@@ -23,15 +23,8 @@ public class UserDetailsInfoVo extends UserDetailsInfoDto {
 
     private static final long serialVersionUID = 562898741873474891L;
 
-
-    /** 员工职务   1: 摄影师 2：数码师（后期）  3：化妆师 等 */
     @ApiModelProperty(value = "职务")
-    private Byte staffPosition;
-
-
-    @ApiModelProperty(value = "职务")
-    private String staffPositionText;
-
+    private String userPositionText;
 
     /** 所在行政区街道 */
     @ApiModelProperty(value = "所在行政区街道")
@@ -44,7 +37,5 @@ public class UserDetailsInfoVo extends UserDetailsInfoDto {
     @ApiModelProperty(value = "组织机构")
     private String staffOrgName;
 
-    /** 技能（特长）*/
-    private String skillText;
 
 }

@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import pers.liujunyi.cloud.centre.entity.user.UserDetailsInfo;
-import pers.liujunyi.cloud.common.repository.jpa.BaseRepository;
+import pers.liujunyi.cloud.common.repository.jpa.BaseJpaRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  * @version 1.0
  * @author ljy
  */
-public interface UserDetailsInfoRepository extends BaseRepository<UserDetailsInfo, Long> {
+public interface UserDetailsInfoRepository extends BaseJpaRepository<UserDetailsInfo, Long> {
 
     /**
      * 修改状态
