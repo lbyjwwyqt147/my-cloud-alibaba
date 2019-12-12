@@ -24,10 +24,14 @@ import pers.liujunyi.cloud.common.util.RemoteCloudUtil;
 import pers.liujunyi.cloud.dict.util.DictUtil;
 import pers.liujunyi.cloud.security.entity.organizations.Organizations;
 import pers.liujunyi.cloud.security.entity.user.UserAccounts;
+import pers.liujunyi.cloud.security.service.authorization.PositionInfoMongoService;
 import pers.liujunyi.cloud.security.service.organizations.StaffOrgMongoService;
 import pers.liujunyi.cloud.security.service.user.UserAccountsMongoService;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -57,6 +61,8 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
     private RemoteCloudUtil remoteCloudUtil;
     @Autowired
     private StaffOrgMongoService staffOrgMongoService;
+    @Autowired
+    private PositionInfoMongoService positionInfoMongoService;
 
     public UserDetailsInfoMongoServiceImpl(BaseMongoRepository<UserDetailsInfo, Long> baseMongoRepository) {
         super(baseMongoRepository);
@@ -75,7 +81,7 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
 
     @Override
     public ResultInfo findPageGird(UserDetailsInfoQueryDto query) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "entryDate");
+        Sort sort = Sort.by(Sort.Direction.ASC, "userNumber");
         Pageable pageable = query.toPageable(sort);
         // 查询条件
         Query searchQuery = query.toSpecPageable(pageable);
@@ -86,9 +92,15 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
         List<UserDetailsInfoVo> resultDataList = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(searchPageResults)) {
             List<Long> userIds =  searchPageResults.stream().map(UserDetailsInfo::getId).distinct().collect(Collectors.toList());
+            List<Long> accountsIds =  searchPageResults.stream().map(UserDetailsInfo::getUserAccountsId).distinct().collect(Collectors.toList());
+            List<UserAccounts> accountsList = this.userAccountsMongoService.findAllByIdIn(accountsIds);
+            Map<Long, UserAccounts> accountsMap = accountsList.stream().collect(Collectors.toMap(UserAccounts::getId, account -> account));
             // 获取行政区划
             List<Long> districtList = searchPageResults.stream().map(UserDetailsInfo::getDistrict).distinct().collect(Collectors.toList());
-            Map<Long, String> districtMap = this.remoteCloudUtil.getAreaNameToMap(districtList);
+          //  Map<Long, String> districtMap = this.remoteCloudUtil.getAreaNameToMap(districtList);
+            // 获取职位
+            List<Long> positionIds = searchPageResults.stream().map(UserDetailsInfo::getUserPosition).distinct().collect(Collectors.toList());
+            Map<Long, String> positionNameMap = this.positionInfoMongoService.positionNameToMap(positionIds);
             // 获取组织机构信息
             Map<Long, List<Organizations>> orgInfoMap = this.staffOrgMongoService.getOrgInfoByStaffIdIn(userIds);
             searchPageResults.stream().forEach(item -> {
@@ -101,7 +113,11 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
                         staffDetailsInfo.setOrgId(organizations.getId());
                     }
                 }
-                staffDetailsInfo.setAddressText(!CollectionUtils.isEmpty(districtMap) ? districtMap.get(item.getDistrict()) : "");
+                if (!CollectionUtils.isEmpty(positionNameMap)) {
+                    staffDetailsInfo.setUserPositionText(positionNameMap.get(item.getUserPosition()));
+                }
+             //   staffDetailsInfo.setAddressText(!CollectionUtils.isEmpty(districtMap) ? districtMap.get(item.getDistrict()) : "");
+                staffDetailsInfo.setDataVersion(accountsMap.get(item.getUserAccountsId()).getDataVersion());
                 staffDetailsInfo.setUserId(item.getUserAccountsId());
                 resultDataList.add(staffDetailsInfo);
             });

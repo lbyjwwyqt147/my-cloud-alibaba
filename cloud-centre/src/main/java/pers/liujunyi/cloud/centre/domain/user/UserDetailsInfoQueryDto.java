@@ -60,4 +60,8 @@ public class UserDetailsInfoQueryDto extends BaseMongoQuery {
     @QueryCondition()
     private Byte userStatus;
 
+    /** 用户类别   0：超级管理员 1：普通管理员 2：内部职工 3：普通用户   */
+    @ApiModelProperty(value = "用户类别   0：超级管理员 1：普通管理员 2：内部职工 3：普通用户")
+    @QueryCondition()
+    private Byte userCategory;
 }

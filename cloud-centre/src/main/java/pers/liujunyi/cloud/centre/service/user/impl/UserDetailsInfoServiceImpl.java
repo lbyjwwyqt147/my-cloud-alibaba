@@ -94,7 +94,7 @@ public class UserDetailsInfoServiceImpl extends BaseJpaMongoServiceImpl<UserDeta
         if (count > 0) {
             Map<Long, Map<String, Object>> sourceMap = new ConcurrentHashMap<>();
             Map<String, Object> docDataMap = new HashMap<>();
-            docDataMap.put("staffStatus", status);
+            docDataMap.put("userStatus", status);
             docDataMap.put("updateTime", System.currentTimeMillis());
             ids.stream().forEach(item -> {
                 sourceMap.put(item, docDataMap);
@@ -132,7 +132,9 @@ public class UserDetailsInfoServiceImpl extends BaseJpaMongoServiceImpl<UserDeta
 
     @Override
     public ResultInfo syncDataToMongo() {
+        this.userAccountsService.syncDataToMongo();
         super.syncDataMongoDb();
+        this.staffOrgService.syncDataToMongo();
         return ResultUtil.success();
     }
 
