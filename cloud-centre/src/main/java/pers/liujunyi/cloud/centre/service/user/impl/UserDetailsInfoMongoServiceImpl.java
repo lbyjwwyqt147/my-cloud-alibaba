@@ -117,7 +117,8 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
                     staffDetailsInfo.setUserPositionText(positionNameMap.get(item.getUserPosition()));
                 }
              //   staffDetailsInfo.setAddressText(!CollectionUtils.isEmpty(districtMap) ? districtMap.get(item.getDistrict()) : "");
-                staffDetailsInfo.setDataVersion(accountsMap.get(item.getUserAccountsId()).getDataVersion());
+                UserAccounts accounts = accountsMap.get(item.getUserAccountsId()) ;
+                staffDetailsInfo.setDataVersion(accounts != null ? accounts.getDataVersion() : null);
                 staffDetailsInfo.setUserId(item.getUserAccountsId());
                 resultDataList.add(staffDetailsInfo);
             });
