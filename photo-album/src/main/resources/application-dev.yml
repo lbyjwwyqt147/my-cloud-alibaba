@@ -1,0 +1,221 @@
+server:
+  port: 18083
+  tomcat:
+      uri-encoding: utf-8
+# 系统参数 信息
+data:
+  # 域名设置 跨域
+  allowedOrigin: '*'
+  # 直接访问 http://localhost:18083 时 返回信息设置
+  indexView: '请访问：http://localhost:18083/swagger-ui.html  查看API文档'
+  # redis 是否默填充application name 作为redis key 的前缀   true 填充 false 不填充   例如：photo_album:user    photo_album:为自动填充
+  redisPrefixion: true
+  # cloud_core 地址
+  cloud:
+    url: http://127.0.0.1:18080/api/
+
+  security:
+    # 不需要权限认证的资源
+    antMatchers:
+      /oauth/**,
+      /api/*/user/login,
+      /api/user/login,
+      /api/*/out,
+      /api/*/user/out,
+      /api/*/ignore/**,
+      /api/*/table/**,
+      /api/*/tree/**
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://101.132.136.225:3306/cloud_centre?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=CTT&rewriteBatchedStatements=true&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: root@163
+    druid:
+      # 连接池配置
+      #初始化时建立物理连接的个数
+      initial-size: 5
+      #最小空闲连接
+      min-idle: 1
+      #池中最大连接数
+      max-active: 20
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+     # max-evictable-idle-time-millis: 600000
+      max-open-prepared-statements: 60000
+      # 打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      #获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      #归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false
+      #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，如果连接空闲时间大于等于minEvictableIdleTimeMillis则关闭物理连接 单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      #使用该SQL语句检查链接是否可用。如果validationQuery=null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用
+      validation-query: SELECT 1 FROM DUAL
+      validation-query-timeout: 60000
+      query-timeout: 60000
+      transaction-threshold-millis: 60000
+      remove-abandoned-timeout-millis: 30000
+      remove-abandoned: true
+      log-abandoned: false
+      #  配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j2
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      # 合并多个DruidDataSource的监控数据
+      use-global-data-source-stat: true
+      # 监控配置　WebStatFilter配置
+      web-stat-filter:
+        enabled: true
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+        principal-cookie-name: admin
+        principal-session-name: admin
+        profile-enable: true
+        session-stat-enable: false
+        session-stat-max-count: 1000
+        url-pattern: '/*'
+      stat-view-servlet:
+        # IP 白名单
+        allow: 127.0.0.1
+        #  IP黑名单(共同存在时，deny优先于allow)
+        deny: 192.168.0.10
+        enabled: true
+        # 控制台用户名和密码
+        login-password: admin
+        login-username: admin
+        reset-enable: false
+        url-pattern: '/druid/*'
+      # 配置日志输出
+      filter:
+        slf4j:
+          enabled: true
+          statement-create-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          result-set-open-after-log-enabled: false
+        log4j2:
+          enabled: true
+          statement-create-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          result-set-open-after-log-enabled: false
+        stat:
+          #慢查询
+          log-slow-sql: true
+          #慢查询时长，默认3秒
+          slow-sql-millis: 5000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+
+
+  # mongodb 配置
+  data:
+    redis:
+      repositories:
+        enabled: false  # true 会出现 Spring Data Redis - Could not safely identify store assignment for repository candidate interface pers.liujunyi.cloud.photo.repository.jpa.album.AlbumRepository.
+    mongodb:
+      uri: mongodb://101.132.136.225:27017,101.132.136.225:27018/cloud-centre?replicaSet=rs
+      #host: 101.132.136.225:27017,101.132.136.225:27018
+      #port: 27017
+      #username: root
+      #password: root
+      #业务数据库
+      database: cloud-centre
+      # 副本集
+      replica-set: rs
+      always-use-m-beans: false
+      #认证授权的数据库
+      authentication-database: admin
+      connect-timeout: 10000
+      heartbeat-connect-timeout: 20000
+      heartbeat-frequency: 10000
+      heartbeat-socket-timeout: 20000
+      local-threshold: 15
+      max-connection-idel-time: 0
+      max-connection-life-time: 0
+      #每个主机的连接数
+      max-connections-per-host: 100
+      max-wait-time: 120000
+      min-connections-per-host: 10
+      min-heartbeat-frequency: 500
+      server-selection-timeout: 30000
+      socket-keep-alive: false
+      #控制是否在一个连接时，系统会自动重试
+      auto-connect-retry: true
+      socket-timeout: 0
+      ssl-enabled: false
+      ssl-invalid-host-name-allowed: false
+      #线程队列数，它以上面connectionsPerHost值相乘的结果就是线程队列最大值
+      threads-allowed-to-block-for-connection-multiplier: 5
+      auto-index-creation: false
+      where-id-field: _id
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+
+  # redis 配置
+  redis:
+    host: 101.132.136.225
+    port: 6379
+    password:
+    database: 5
+    jedis:
+      pool:
+        #最大连接数
+        max-active: 200
+        #最大空闲连接数
+        max-idle: 20
+        # 当池内没有可用的连接时，最大等待时间(负数表示没限制)
+        max-wait: 5000ms
+        #最小空闲连接数
+        min-idle: 10
+    #连接超时时间
+    timeout: 60000ms
+
+  # RSA 加密
+  encrypt:
+    # RSA 私钥
+    privateKey:
+    # RSA 公钥
+    publicKey:
+    # AES 密钥
+    secretKey: dO6+g3+08ELBKtx/1/WBYQ==
+    # 签名过期时间 单位 分钟
+    signExpireTime: 10
+    # 开启调试模式，调试模式下不进行加解密操作，用于像Swagger这种在线API测试场景
+    debug: false
+
+  # 配置服务注册中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+# xxl-job  任务调度执行器配置
+xxl:
+  job:
+    admin:
+      #调度中心部署跟地址：如调度中心集群部署存在多个地址则用逗号分隔。
+      #执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"。
+      addresses: http://101.132.136.225:18084/xxl-job-admin
+
+    #分别配置执行器的名称、ip地址、端口号
+    #注意：如果配置多个执行器时，防止端口冲突
+    executor:
+      appname: xxl-job-executor-centre
+      ip: 101.132.136.225
+      port: 9999
+
+      #执行器运行日志文件存储的磁盘位置，需要对该路径拥有读写权限
+      logpath: /data/applogs/xxl-job/jobhandler
+      #执行器Log文件定期清理功能，指定日志保存天数，日志文件过期自动删除。限制至少保持3天，否则功能不生效；
+      #-1表示永不删除
+      logretentiondays: 30
+
+    accessToken:
