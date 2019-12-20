@@ -11,7 +11,7 @@ spring:
     active: dev
   # 名称必须配置
   application:
-    name: photo_album
+    name: cloud-centre
 
   jpa:
     open-in-view: true

@@ -116,7 +116,7 @@ spring:
             multi-statement-allow: true
 
 
-  # elasticsearch 配置
+  # mongodb 配置
   data:
     redis:
       repositories:
@@ -190,6 +190,12 @@ spring:
     signExpireTime: 10
     # 开启调试模式，调试模式下不进行加解密操作，用于像Swagger这种在线API测试场景
     debug: false
+
+  # 配置服务注册中心
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
 # xxl-job  任务调度执行器配置
 xxl:
