@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>pers.liujunyi.cloud</groupId>
-            <artifactId>cloud-common</artifactId>
+            <artifactId>common</artifactId>
             <version>${cloud-common.version}</version>
             <exclusions>
                 <exclusion>

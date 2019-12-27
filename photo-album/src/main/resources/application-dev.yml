@@ -30,7 +30,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://101.132.136.225:3306/cloud_centre?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=CTT&rewriteBatchedStatements=true&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://101.132.136.225:3306/photo_album?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=CTT&rewriteBatchedStatements=true&autoReconnect=true&failOverReadOnly=false
     username: root
     password: root@163
     druid:
@@ -128,7 +128,7 @@ spring:
       #username: root
       #password: root
       #业务数据库
-      database: cloud-centre
+      database: photo-album
       # 副本集
       replica-set: rs
       always-use-m-beans: false
@@ -164,7 +164,7 @@ spring:
     host: 101.132.136.225
     port: 6379
     password:
-    database: 5
+    database: 6
     jedis:
       pool:
         #最大连接数
@@ -208,7 +208,7 @@ xxl:
     #分别配置执行器的名称、ip地址、端口号
     #注意：如果配置多个执行器时，防止端口冲突
     executor:
-      appname: xxl-job-executor-centre
+      appname: xxl-job-executor-photo
       ip: 101.132.136.225
       port: 9999
 
