@@ -22,8 +22,9 @@
         <mysql-version>8.0.18</mysql-version>
         <druid-version>1.1.20</druid-version>
         <xxl-job-core-version>2.1.1</xxl-job-core-version>
+        <centre-dubbo-api.version>1.0-SNAPSHOT</centre-dubbo-api.version>
         <cloud-common.version>0.0.2-SNAPSHOT</cloud-common.version>
-        <spring-cloud.version>Greenwich.SR4</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
         <spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
         <skipTests>true</skipTests>
     </properties>
@@ -34,8 +35,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- RPC 框架 -->
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -68,6 +74,11 @@
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>pers.liujunyi.cloud</groupId>
+            <artifactId>centre-dubbo-api</artifactId>
+            <version>${centre-dubbo-api.version}</version>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

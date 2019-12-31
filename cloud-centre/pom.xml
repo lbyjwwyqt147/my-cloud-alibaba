@@ -18,10 +18,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <centre-dubbo-api.version>1.0-SNAPSHOT</centre-dubbo-api.version>
         <cloud-common-version>0.0.2-SNAPSHOT</cloud-common-version>
         <security-core-version>0.0.2-SNAPSHOT</security-core-version>
         <dict-core-version>0.0.2-SNAPSHOT</dict-core-version>
-        <spring-cloud.version>Greenwich.SR4</spring-cloud.version>
+        <!-- spring-cloud 版本一定要和spring boot 版本相对应  具体对应关系查看官网https://spring.io/projects/spring-cloud -->
+        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
         <spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
         <skipTests>true</skipTests>
     </properties>
@@ -52,6 +54,26 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- actuator，用于暴露监控端点 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- RPC 框架 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-dubbo</artifactId>
+        </dependency>
+        <!-- 熔断 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+            <version>1.7.1</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
@@ -73,7 +95,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>pers.liujunyi.cloud</groupId>
+            <artifactId>centre-dubbo-api</artifactId>
+            <version>${centre-dubbo-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

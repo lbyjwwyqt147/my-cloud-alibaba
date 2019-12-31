@@ -9,7 +9,7 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   profiles:
     active: dev
-  # 名称必须配置
+  # 名称必须配置 服务名称尽量用-，不要用_，不要用特殊字符
   application:
     name: cloud-centre
 
@@ -58,3 +58,10 @@ logging:
 # es mapper 文件路径
 es:
   basePath: esmapper/
+
+# 暴露所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

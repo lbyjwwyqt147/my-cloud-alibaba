@@ -196,6 +196,21 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+
+
+dubbo:
+  protocol:
+    name: centre-dubbo
+    #Dubbo 服务暴露的协议配置，其中子属性 name 为协议名称，port 为协议端口（ -1 表示自增端口，从 20880 开始）
+    port: -1
+  registry:
+    #Dubbo 服务注册中心配置，其中子属性 address 的值 "spring-cloud://localhost"，说明挂载到 Spring Cloud 注册中心
+    address: spring-cloud://localhost
+  cloud:
+    #表示要订阅服务的服务名，这里配置的alibaba-dubbo-server对应的就是上一节服务提供方的spring.application.name的值，也就是服务提供方的应用名。
+    subscribed-services: cloud-centre
 
 # xxl-job  任务调度执行器配置
 xxl:

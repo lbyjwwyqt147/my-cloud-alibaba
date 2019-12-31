@@ -1,5 +1,6 @@
 package pers.liujunyi.cloud.photo.service.album.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -7,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import pers.liujunyi.cloud.centre.api.service.dict.DictService;
 import pers.liujunyi.cloud.common.repository.mongo.BaseMongoRepository;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
@@ -38,7 +40,10 @@ public class RollingPictureMongoServiceImpl extends BaseMongoServiceImpl<Rolling
 
     @Autowired
     private RollingPictureMongoRepository rollingPictureMongoRepository;
-    
+
+    @Reference
+    DictService dictService;
+
     public RollingPictureMongoServiceImpl(BaseMongoRepository<RollingPicture, Long> baseMongoRepository) {
         super(baseMongoRepository);
     }
@@ -57,6 +62,7 @@ public class RollingPictureMongoServiceImpl extends BaseMongoServiceImpl<Rolling
         if (!CollectionUtils.isEmpty(searchPageResults)) {
             searchPageResults.stream().forEach(item -> {
                 RollingPictureVo RollingPictureVo = DozerBeanMapperUtil.copyProperties(item, RollingPictureVo.class);
+
                 resultDataList.add(RollingPictureVo);
             });
         }

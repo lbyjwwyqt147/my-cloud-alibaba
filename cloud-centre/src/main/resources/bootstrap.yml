@@ -1,0 +1,20 @@
+#   测试环境：java -jar file-server.jar --spring.profiles.active=test
+#   开发环境：java -jar flie-server.jar --spring.profiles.active=dev
+#   生产环境：java -jar file-server.jar --spring.profiles.active=prod
+spring:
+  application:
+    name: cloud-centre
+  main:
+    #当遇到同样名字的时候，是否允许覆盖注册
+    allow-bean-definition-overriding: true
+
+  # 配置服务注册中心
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        prefix: ${spring.application.name}
+        file-extension: yml
+      discovery:
+        server-addr: 127.0.0.1:8848
+
