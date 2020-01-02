@@ -218,7 +218,7 @@ spring:
             server-addr: 127.0.0.1:8848
             dataId: ${spring.application.name}-degrade-rules
             data-type: json
-            rule-type: degrade
+            rule-type: flow
 feign:
   sentinel:
     enabled: true
@@ -231,12 +231,15 @@ dubbo:
   registry:
     #Dubbo 服务注册中心配置，其中子属性 address 的值 "spring-cloud://localhost"，说明挂载到 Spring Cloud 注册中心
     address: spring-cloud://localhost
+    check: false
   scan:
     #指定 Dubbo API 服务实现类的扫描基准包
     base-packages: pers.liujunyi.cloud.centre.service.rpc
   application:
     qos:
       enable: false
+  consumer:
+    check: false
 # xxl-job  任务调度执行器配置
 xxl:
   job:

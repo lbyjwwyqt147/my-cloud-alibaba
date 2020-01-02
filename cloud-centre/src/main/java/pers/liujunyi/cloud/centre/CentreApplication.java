@@ -6,13 +6,16 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.alibaba.sentinel.annotation.SentinelRestTemplate;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextListener;
+import pers.liujunyi.cloud.centre.util.SentinelExceptionHandler;
 import pers.liujunyi.cloud.common.configuration.MySQLUpperCaseStrategy;
 import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
 
@@ -40,6 +43,27 @@ public class CentreApplication {
     @Bean
     public RequestContextListener requestContextListener(){
         return new RequestContextListener();
+    }
+
+    /**
+     * blockHandler
+     * 限流后处理的方法
+     *
+     * blockHandlerClass
+     * 限流后处理的类
+     *
+     * fallback
+     * 熔断后处理的方法
+     *
+     * fallbackClass
+     * 熔断后处理的类
+     *
+     * @return RestTemplate
+     */
+    @Bean
+    @SentinelRestTemplate(fallback = "fallback", fallbackClass = SentinelExceptionHandler.class, blockHandler = "handleException", blockHandlerClass = SentinelExceptionHandler.class)
+    RestTemplate restTemplate(){
+        return new RestTemplate();
     }
 
     public static void main(String[] args) {

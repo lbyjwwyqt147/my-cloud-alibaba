@@ -196,13 +196,33 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+        enabled: true
+        register-enabled: true
       config:
         server-addr: 127.0.0.1:8848
-
+    # 熔断
+    sentinel:
+      #取消Sentinel控制台懒加载
+      eager: true
+      transport:
+        #Sentinel 控制台地址
+        dashboard: localhost:18849
+      log:
+        dir: ./logs/csp/
+      datasource:
+        ds1:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            dataId: ${spring.application.name}-degrade-rules
+            data-type: json
+            rule-type: flow
+feign:
+  sentinel:
+    enabled: true
 
 dubbo:
   protocol:
-    name: centre-dubbo
+    name: dubbo
     #Dubbo 服务暴露的协议配置，其中子属性 name 为协议名称，port 为协议端口（ -1 表示自增端口，从 20880 开始）
     port: -1
   registry:
@@ -218,14 +238,14 @@ xxl:
     admin:
       #调度中心部署跟地址：如调度中心集群部署存在多个地址则用逗号分隔。
       #执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"。
-      addresses: http://101.132.136.225:18084/xxl-job-admin
+      addresses: http://127.0.0.1:18084/xxl-job-admin
 
     #分别配置执行器的名称、ip地址、端口号
     #注意：如果配置多个执行器时，防止端口冲突
     executor:
       appname: xxl-job-executor-photo
-      ip: 101.132.136.225
-      port: 9999
+      ip: 127.0.0.1
+      port: 9899
 
       #执行器运行日志文件存储的磁盘位置，需要对该路径拥有读写权限
       logpath: /data/applogs/xxl-job/jobhandler

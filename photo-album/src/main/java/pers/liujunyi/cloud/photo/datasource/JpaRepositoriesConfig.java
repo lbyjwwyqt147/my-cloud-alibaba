@@ -35,9 +35,9 @@ import java.sql.SQLException;
  * @author ljy
  */
 @Configuration
-@EntityScan(basePackages = {"pers.liujunyi.cloud.photo.entity", "pers.liujunyi.cloud.security.entity", "pers.liujunyi.cloud.dict.entity"})
-@EnableJpaRepositories(basePackages = {"pers.liujunyi.cloud.photo.repository.jpa", "pers.liujunyi.cloud.security.repository.jpa", "pers.liujunyi.cloud.dict.repository.jpa"})
-@EnableMongoRepositories(basePackages = {"pers.liujunyi.cloud.photo.repository.mongo",  "pers.liujunyi.cloud.security.repository.mongo", "pers.liujunyi.cloud.dict.repository.mongo"})
+@EntityScan(basePackages = {"pers.liujunyi.cloud.photo.entity"})
+@EnableJpaRepositories(basePackages = {"pers.liujunyi.cloud.photo.repository.jpa"})
+@EnableMongoRepositories(basePackages = {"pers.liujunyi.cloud.photo.repository.mongo"})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class JpaRepositoriesConfig {
 

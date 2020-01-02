@@ -58,3 +58,10 @@ logging:
 # es mapper 文件路径
 es:
   basePath: esmapper/
+
+# 暴露所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

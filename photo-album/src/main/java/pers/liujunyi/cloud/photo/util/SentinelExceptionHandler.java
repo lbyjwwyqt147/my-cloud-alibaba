@@ -1,4 +1,4 @@
-package pers.liujunyi.cloud.centre.util;
+package pers.liujunyi.cloud.photo.util;
 
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import lombok.extern.slf4j.Slf4j;
