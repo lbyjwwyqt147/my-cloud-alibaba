@@ -54,6 +54,7 @@ spring:
 logging:
   level:
     io.swagger.models.parameters.AbstractSerializableParameter: error
+    org.springframework.security: DEBUG
 
 # es mapper 文件路径
 es:

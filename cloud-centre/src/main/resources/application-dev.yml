@@ -24,8 +24,7 @@ data:
       /api/*/user/out,
       /api/*/ignore/**,
       /api/*/table/**,
-      /api/*/tree/**,
-      /cloud-centre
+      /api/*/tree/**
 
 spring:
   datasource:

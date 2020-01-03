@@ -232,6 +232,16 @@ dubbo:
     #表示要订阅服务的服务名，这里配置的alibaba-dubbo-server对应的就是上一节服务提供方的spring.application.name的值，也就是服务提供方的应用名。
     subscribed-services: cloud-centre
 
+security:
+  oauth2:
+    # 资源配置
+    resource:
+      # 资源ID
+      id: resource_id
+      #用户端点的URI，用于获取当前用户详细信息
+      user-info-uri:  http://localhost:18848/centre/api/v1/ignore/user/info
+      prefer-token-info: false
+
 # xxl-job  任务调度执行器配置
 xxl:
   job:
