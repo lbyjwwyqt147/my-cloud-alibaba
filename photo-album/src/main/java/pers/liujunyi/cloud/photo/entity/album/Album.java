@@ -51,6 +51,11 @@ public class Album extends BaseEntity {
     @Column(length = 10, nullable = false, columnDefinition="varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '相册分类 例如：旅拍、活动 等'")
     private String albumClassify;
 
+    /** 相册风格 例如：古风、小清新 等 */
+    @Column(length = 10, nullable = false, columnDefinition="varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '相册风格 例如：古风、小清新 等'")
+    private String albumStyle;
+
+
     /** 相册状态  0：已发布（可见）  1：不可见  2：草稿 */
     @Column(columnDefinition="tinyint(4) DEFAULT '2' COMMENT '相册状态 0：已发布（可见）  1：不可见  2：草稿'")
     @Indexed

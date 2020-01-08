@@ -31,6 +31,9 @@ public class AlbumQueryDto extends BaseMongoQuery {
     @QueryCondition()
     private String albumClassify;
 
+    /** 相册风格 例如：古风、小清新 等 */
+    private String albumStyle;
+
     /** 相册状态  0：已发布（可见）  1：不可见  2：草稿 */
     @ApiModelProperty(value = "状态")
     @QueryCondition()

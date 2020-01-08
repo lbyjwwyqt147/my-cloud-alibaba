@@ -51,6 +51,12 @@ public class AlbumDto extends BaseDto {
     @Min(value = 0, message = "状态 必须是数字类型")
     private Byte albumStatus;
 
+    /** 相册风格 例如：古风、小清新 等 */
+    @ApiModelProperty(value = "相册风格")
+    @NotBlank(message = "风格必须填写")
+    @Length(min = 0, max = 10, message = "风格 最多可以输入10个字符")
+    private String albumStyle;
+
     /** 相册描述 */
     @ApiModelProperty(value = "相册描述")
     @Length(min = 0, max = 255, message = "描述 最多可以输入255个字符")

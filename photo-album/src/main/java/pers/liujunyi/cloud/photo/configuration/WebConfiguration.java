@@ -2,11 +2,9 @@ package pers.liujunyi.cloud.photo.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.Ordered;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -32,18 +30,6 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
 
     @Autowired
     private RequestMappingHandlerAdapter handlerAdapter;
-    @Autowired
-    @Lazy
-    private CorsInterceptor corsInterceptor;
-
-    @Override
-    protected void addInterceptors(InterceptorRegistry registry) {
-        // 跨域拦截器
-        registry.addInterceptor(corsInterceptor)
-                .addPathPatterns("/**").order(-10);
-        super.addInterceptors(registry);
-    }
-
 
     /**
      * 注册资源
