@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.liujunyi.cloud.centre.domain.user.UserDetailsInfoDto;
 import pers.liujunyi.cloud.centre.domain.user.UserDetailsInfoQueryDto;
+import pers.liujunyi.cloud.centre.service.user.UserAuthService;
 import pers.liujunyi.cloud.centre.service.user.UserDetailsInfoMongoService;
 import pers.liujunyi.cloud.centre.service.user.UserDetailsInfoService;
 import pers.liujunyi.cloud.common.annotation.ApiVersion;
@@ -38,6 +39,8 @@ public class UserDetailsInfoController extends BaseController {
     private UserDetailsInfoService userDetailsInfoService;
     @Autowired
     private UserDetailsInfoMongoService userDetailsInfoMongoService;
+    @Autowired
+    private UserAuthService userAuthService;
 
     /**
      * 保存数据
@@ -199,6 +202,41 @@ public class UserDetailsInfoController extends BaseController {
     @ApiVersion(1)
     public ResultInfo setCurDimissionInfo(Long id, Long userId, Date date, String dimissionReason, Long dataVersion) {
         return this.userDetailsInfoService.setCurDimissionInfo(id, userId, date, dimissionReason, dataVersion);
+    }
+
+    /**
+     *  API接口权限校验
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "API接口权限校验")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+    })
+    @GetMapping(value = "ignore/authority/authentication")
+    @ApiVersion(1)
+    public ResultInfo isAuthenticated(String token, String requestUrl) {
+        ResultInfo resultInfo = ResultUtil.success();
+        boolean isAuth = this.userAuthService.isAuthenticated(token, requestUrl);
+        resultInfo.setSuccess(isAuth);
+        return resultInfo;
+    }
+
+    /**
+     *  获取用户详细信息
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "获取用户详细信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+    })
+    @GetMapping(value = "ignore/user/details/{token}")
+    @ApiVersion(5)
+    public ResultInfo getUserDetails(@PathVariable(name = "token")String token) {
+        ResultInfo resultInfo = ResultUtil.success();
+        resultInfo.setData(this.userAuthService.getUserDetails(token));
+        return resultInfo;
     }
 
     /**

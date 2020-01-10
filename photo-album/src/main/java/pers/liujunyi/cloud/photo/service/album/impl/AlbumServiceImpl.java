@@ -20,8 +20,8 @@ import pers.liujunyi.cloud.photo.entity.album.Album;
 import pers.liujunyi.cloud.photo.entity.album.AlbumPicture;
 import pers.liujunyi.cloud.photo.repository.jpa.album.AlbumPictureRepository;
 import pers.liujunyi.cloud.photo.repository.jpa.album.AlbumRepository;
-import pers.liujunyi.cloud.photo.repository.mongo.album.AlbumMongoRepository;
 import pers.liujunyi.cloud.photo.repository.mongo.album.AlbumPictureMongoRepository;
+import pers.liujunyi.cloud.photo.service.album.AlbumMongoService;
 import pers.liujunyi.cloud.photo.service.album.AlbumService;
 import pers.liujunyi.cloud.photo.service.album.RollingPictureService;
 
@@ -46,7 +46,7 @@ public class AlbumServiceImpl extends BaseJpaMongoServiceImpl<Album, Long> imple
     @Autowired
     private AlbumRepository albumRepository;
     @Autowired
-    private AlbumMongoRepository albumMongoRepository;
+    private AlbumMongoService albumMongoService;
     @Autowired
     private AlbumPictureRepository albumPictureRepository;
     @Autowired
@@ -113,7 +113,7 @@ public class AlbumServiceImpl extends BaseJpaMongoServiceImpl<Album, Long> imple
             List<AlbumPicture> albumPictures =  this.albumPictureRepository.saveAll(albumPictureList);
             this.albumPictureMongoRepository.saveAll(albumPictures);
         }
-        this.albumMongoRepository.save(saveObject);
+        this.albumMongoService.save(saveObject);
         return ResultUtil.success(saveObject.getId());
     }
 
@@ -139,17 +139,26 @@ public class AlbumServiceImpl extends BaseJpaMongoServiceImpl<Album, Long> imple
 
     @Override
     public ResultInfo deleteSingle(Long id) {
-        this.albumRepository.deleteById(id);
-        this.rollingPictureService.deleteByBusinessId(id);
-        List<AlbumPicture> pictureList = this.albumPictureMongoRepository.findByAlbumId(id);
-        if (!CollectionUtils.isEmpty(pictureList)) {
-            this.albumMongoRepository.deleteById(id);
-            List<Long> fileIds = pictureList.stream().map(AlbumPicture::getId).collect(Collectors.toList());
-            this.albumPictureRepository.deleteByIdIn(fileIds);
-            this.albumPictureMongoRepository.deleteByIdIn(fileIds);
-            List<Long> uploadFileIds = pictureList.stream().map(AlbumPicture::getPictureId).collect(Collectors.toList());
+        Album album = this.albumMongoService.findById(id);
+        if (album != null) {
+            List<Long> uploadFileIds = new LinkedList<>();
+            // 封面图
+            Long cover = album.getSurfacePlotId();
+            if (cover != null) {
+                uploadFileIds.add(cover);
+            }
+            this.albumRepository.deleteById(id);
+            this.rollingPictureService.deleteByBusinessId(id);
+            List<AlbumPicture> pictureList = this.albumPictureMongoRepository.findByAlbumId(id);
+            if (!CollectionUtils.isEmpty(pictureList)) {
+                List<Long> fileIds = pictureList.stream().map(AlbumPicture::getId).collect(Collectors.toList());
+                this.albumPictureRepository.deleteByIdIn(fileIds);
+                this.albumPictureMongoRepository.deleteByIdIn(fileIds);
+                uploadFileIds.addAll(pictureList.stream().map(AlbumPicture::getPictureId).collect(Collectors.toList()));
+            }
+            this.albumMongoService.deleteById(id);
             // 删除服务器上的文件
-            this.remoteCloudUtil.deleteFileByIds(StringUtils.join(uploadFileIds, ","));
+            this.remoteCloudUtil.deleteOssFileByIds(StringUtils.join(uploadFileIds, ","));
         }
         return ResultUtil.success();
     }
@@ -200,7 +209,7 @@ public class AlbumServiceImpl extends BaseJpaMongoServiceImpl<Album, Long> imple
         if (albumPicture != null) {
             this.albumPictureMongoRepository.deleteById(pictureId);
             // 删除服务器上的文件
-            this.remoteCloudUtil.deleteFileByIds(albumPicture.getPictureId().toString());
+            this.remoteCloudUtil.deleteOssFileByIds(albumPicture.getPictureId().toString());
         }
         return ResultUtil.success();
     }

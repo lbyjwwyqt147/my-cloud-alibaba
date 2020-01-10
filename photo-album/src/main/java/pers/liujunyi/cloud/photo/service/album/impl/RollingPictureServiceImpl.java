@@ -103,7 +103,7 @@ public class RollingPictureServiceImpl extends BaseJpaMongoServiceImpl<RollingPi
             if (!CollectionUtils.isEmpty(rollingPictureList)) {
                 List<Long> uploadFileIds = rollingPictureList.stream().map(RollingPicture::getPictureId).collect(Collectors.toList());
                 // 删除服务器上的文件
-                this.remoteCloudUtil.deleteFileByIds(StringUtils.join(uploadFileIds, ","));
+                this.remoteCloudUtil.deleteOssFileByIds(StringUtils.join(uploadFileIds, ","));
             }
             return ResultUtil.success();
         }
@@ -119,7 +119,7 @@ public class RollingPictureServiceImpl extends BaseJpaMongoServiceImpl<RollingPi
             if (!CollectionUtils.isEmpty(rollingPictureList)) {
                 List<Long> uploadFileIds = rollingPictureList.stream().map(RollingPicture::getPictureId).collect(Collectors.toList());
                 // 删除服务器上的文件
-                this.remoteCloudUtil.deleteFileByIds(StringUtils.join(uploadFileIds, ","));
+                this.remoteCloudUtil.deleteOssFileByIds(StringUtils.join(uploadFileIds, ","));
             }
             return ResultUtil.success();
         }

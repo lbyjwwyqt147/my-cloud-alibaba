@@ -80,7 +80,6 @@ public class AlbumDto extends BaseDto {
 
     /** 拍摄地点 */
     @ApiModelProperty(value = "拍摄地点")
-    @NotBlank(message = "拍摄地点")
     @Length(min = 0, max = 32, message = "拍摄地点 最多可以输入32个字符")
     private String spotForPhotography;
 

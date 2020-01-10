@@ -1,12 +1,14 @@
 package pers.liujunyi.cloud.photo.service.album.impl;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import pers.liujunyi.cloud.centre.api.service.dict.DictService;
 import pers.liujunyi.cloud.common.repository.mongo.BaseMongoRepository;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
@@ -46,7 +48,9 @@ public class AlbumMongoServiceImpl extends BaseMongoServiceImpl<Album, Long> imp
     private AlbumMongoRepository albumMongoRepository;
     @Autowired
     private AlbumPictureMongoRepository albumPictureMongoRepository;
-
+    /** org.apache.dubbo.config.annotation.Reference */
+    @Reference
+    DictService dictService;
 
     public AlbumMongoServiceImpl(BaseMongoRepository<Album, Long> baseMongoRepository) {
         super(baseMongoRepository);

@@ -14,7 +14,7 @@ import java.util.Map;
  * 文件描述: 数据字典 RPC Service impl
  * 公 司:
  * 内容摘要:
- * 其他说明:
+ * 其他说明: @Service 包为 org.apache.dubbo.config.annotation.Service
  * 完成日期:2019年12月31日
  * 修改记录:
  * @version 1.0

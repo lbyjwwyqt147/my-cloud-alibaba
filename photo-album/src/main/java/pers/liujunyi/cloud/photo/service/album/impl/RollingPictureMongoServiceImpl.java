@@ -1,6 +1,6 @@
 package pers.liujunyi.cloud.photo.service.album.impl;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
