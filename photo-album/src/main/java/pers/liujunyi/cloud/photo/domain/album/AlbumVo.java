@@ -24,9 +24,11 @@ public class AlbumVo extends AlbumDto {
     /** 相册图片 */
     @ApiModelProperty(value = "相册图片")
     private List<AlbumPicture> albumPictureData;
-    /** 类型名称 */
-    @ApiModelProperty(value = "类型名称")
+    /** 分类名称 */
+    @ApiModelProperty(value = "分类名称")
     private String albumClassifyText;
+    /** 风格名称 */
+    private String albumStyleText;
     /** 封面 */
     private String cover;
 }

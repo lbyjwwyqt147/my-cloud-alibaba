@@ -67,11 +67,11 @@ public class AlbumServiceImpl extends BaseJpaMongoServiceImpl<Album, Long> imple
         boolean add = album.getId() == null ? true : false;
         if (add) {
             album.setAlbumNumber(String.valueOf(System.currentTimeMillis()));
-            record.setDataVersion(1L);
+            album.setDataVersion(1L);
         } else {
-            record.setUpdateTime(new Date());
-            record.setUpdateUserId(UserContext.currentUserId());
-            record.setDataVersion(record.getDataVersion() + 1);
+            album.setUpdateTime(new Date());
+            album.setUpdateUserId(UserContext.currentUserId());
+            album.setDataVersion(record.getDataVersion() + 1);
         }
         if (record.getAlbumPriority() == null) {
             album.setAlbumPriority((byte) 10);

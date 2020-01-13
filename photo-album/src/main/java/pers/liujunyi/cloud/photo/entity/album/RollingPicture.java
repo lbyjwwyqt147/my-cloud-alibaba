@@ -70,9 +70,6 @@ public class RollingPicture extends BaseEntity {
     @Column(columnDefinition="tinyint(4) DEFAULT '0' COMMENT '文件分类 0：图片 1：文档  2：视频  5：其他'")
     private Byte pictureCategory;
 
-    /** 类型 例如：1：旅拍  2：活动图片   */
-    @Column(columnDefinition="varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '类型 例如：1：旅拍  2：活动图片 '")
-    private String variety;
 
     /** 业务ID */
     @Column(columnDefinition=" bigint(20) NOT NULL COMMENT '业务ID'")

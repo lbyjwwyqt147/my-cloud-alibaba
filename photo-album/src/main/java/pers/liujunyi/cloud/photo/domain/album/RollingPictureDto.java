@@ -41,9 +41,6 @@ public class RollingPictureDto extends BaseDto {
     @NotBlank(message = "缺少上传图片")
     private String pictures;
 
-    @ApiModelProperty(value = "类型 例如： 1：旅拍  2：活动图片  ")
-    private String variety;
-
     @ApiModelProperty(value = "业务ID")
     private Long businessId;
 

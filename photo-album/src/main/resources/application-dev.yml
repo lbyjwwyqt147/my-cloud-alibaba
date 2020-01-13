@@ -12,7 +12,7 @@ data:
   redisPrefixion: true
   # cloud_core 地址
   cloud:
-    url: http://127.0.0.1:18080/api/
+    url: http://127.0.0.1:18080/api
 
   security:
     # 不需要权限认证的资源

@@ -10,6 +10,7 @@ import pers.liujunyi.cloud.common.annotation.ApiVersion;
 import pers.liujunyi.cloud.common.controller.BaseController;
 import pers.liujunyi.cloud.common.dto.IdParamDto;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
+import pers.liujunyi.cloud.common.restful.ResultUtil;
 import pers.liujunyi.cloud.photo.domain.album.AlbumDto;
 import pers.liujunyi.cloud.photo.domain.album.AlbumQueryDto;
 import pers.liujunyi.cloud.photo.service.album.AlbumMongoService;
@@ -79,7 +80,7 @@ public class AlbumController  extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1")
     })
-    @DeleteMapping(value = "verify/album/d/picture")
+    @DeleteMapping(value = "ignore/album/d/picture")
     @ApiVersion(1)
     public ResultInfo singleDeleteAlbumPicture(@Valid IdParamDto param) {
         return this.albumService.deleteAlbumPictureById(param.getId());
@@ -117,6 +118,23 @@ public class AlbumController  extends BaseController {
     @ApiVersion(1)
     public ResultInfo updateDataStatus(@Valid IdParamDto param ) {
         return this.albumService.updateStatus(param.getStatus(), param.getId());
+    }
+
+    /**
+     *  根据ID 获取相册基础信息
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation(value = "根据ID 获取相册基础信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "id", value = "id", paramType = "path",   required = true, dataType = "Long")
+    })
+    @GetMapping(value = "table/album/{id}")
+    @ApiVersion(1)
+    public ResultInfo findById(@PathVariable(name = "id") Long id) {
+        return ResultUtil.success(this.albumMongoService.detailsById(id));
     }
 
 

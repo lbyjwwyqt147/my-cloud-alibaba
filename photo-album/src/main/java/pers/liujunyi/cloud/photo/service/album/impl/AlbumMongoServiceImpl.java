@@ -22,6 +22,7 @@ import pers.liujunyi.cloud.photo.repository.mongo.album.AlbumMongoRepository;
 import pers.liujunyi.cloud.photo.repository.mongo.album.AlbumPictureMongoRepository;
 import pers.liujunyi.cloud.photo.service.album.AlbumMongoService;
 import pers.liujunyi.cloud.photo.util.Constant;
+import pers.liujunyi.cloud.photo.util.DictConstant;
 
 import java.util.HashMap;
 import java.util.List;
@@ -86,21 +87,12 @@ public class AlbumMongoServiceImpl extends BaseMongoServiceImpl<Album, Long> imp
 
     @Override
     public ResultInfo details(Long id) {
-        return ResultUtil.success(this.detailsById(id));
+        return ResultUtil.success(this.findDetailsInfo(id, true));
     }
 
     @Override
     public AlbumVo detailsById(Long id) {
-        AlbumVo albumVo = null;
-        Album album = this.findById(id);
-        if (album != null) {
-            albumVo = DozerBeanMapperUtil.copyProperties(album, AlbumVo.class);
-            //获取相册图片信息
-            List<AlbumPicture> albumPictures = this.albumPictureMongoRepository.findByAlbumId(albumVo.getId());
-            albumVo.setTotal(albumPictures.size());
-            albumVo.setPictures(JSON.toJSONString(albumPictures));
-        }
-        return albumVo;
+        return this.findDetailsInfo(id, false);
     }
 
     @Override
@@ -135,5 +127,41 @@ public class AlbumMongoServiceImpl extends BaseMongoServiceImpl<Album, Long> imp
             });
         }
         return ResultUtil.success(resultData);
+    }
+
+    /**
+     *
+     * @param id
+     * @param image
+     * @return
+     */
+    private AlbumVo findDetailsInfo(Long id, Boolean image) {
+        AlbumVo albumVo = null;
+        Album album = this.findById(id);
+        if (album != null) {
+            albumVo = DozerBeanMapperUtil.copyProperties(album, AlbumVo.class);
+            if (image) {
+                //获取相册图片信息
+                List<AlbumPicture> albumPictures = this.albumPictureMongoRepository.findByAlbumId(albumVo.getId());
+                albumVo.setTotal(albumPictures.size());
+                albumVo.setPictures(JSON.toJSONString(albumPictures));
+            }
+            albumVo.setCover(album.getSurfacePlot());
+            List<String> dictParentCodes = new CopyOnWriteArrayList<>();
+            dictParentCodes.add(DictConstant.ALBUM_CLASSIFY);
+            dictParentCodes.add(DictConstant.IMAGE_STYLE);
+            Map<String, Map<String, String>> dictMap = this.dictService.getDictNameToMapList(dictParentCodes);
+            if (dictMap != null) {
+                Map<String, String> classifyMap = dictMap.get(DictConstant.ALBUM_CLASSIFY);
+                if (classifyMap != null) {
+                    albumVo.setAlbumClassifyText(classifyMap.get(album.getAlbumClassify()));
+                }
+                Map<String, String> styleMap = dictMap.get(DictConstant.IMAGE_STYLE);
+                if (styleMap != null) {
+                    albumVo.setAlbumStyleText(styleMap.get(album.getAlbumStyle()));
+                }
+            }
+        }
+        return albumVo;
     }
 }

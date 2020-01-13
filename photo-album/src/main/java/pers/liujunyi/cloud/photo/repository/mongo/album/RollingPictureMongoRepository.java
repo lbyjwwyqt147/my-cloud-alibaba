@@ -43,11 +43,4 @@ public interface RollingPictureMongoRepository extends BaseMongoRepository<Rolli
      */
     int deleteByPageCodeAndPagePosition(String pageCode, String pagePosition);
 
-    /**
-     * 根据业务ID删除数据
-     * @param variety 1：活动图片  2：写真图片 3：婚纱图片
-     * @param businessId  业务数据ID
-     * @return
-     */
-    int deleteByBusinessIdAndVariety(Long businessId, String variety);
 }
