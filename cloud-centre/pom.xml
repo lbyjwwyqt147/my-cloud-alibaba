@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
+        <version>2.2.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pers.liujunyi.cloud</groupId>
@@ -23,7 +23,7 @@
         <security-core-version>0.0.2-SNAPSHOT</security-core-version>
         <dict-core-version>0.0.2-SNAPSHOT</dict-core-version>
         <!-- spring-cloud 版本一定要和spring boot 版本相对应  具体对应关系查看官网https://spring.io/projects/spring-cloud -->
-        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR3</spring-cloud.version>
         <spring-cloud-alibaba.version>0.9.0.RELEASE</spring-cloud-alibaba.version>
         <skipTests>true</skipTests>
     </properties>
