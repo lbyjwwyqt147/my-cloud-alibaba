@@ -1,5 +1,6 @@
 package pers.liujunyi.cloud.centre.service.user.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +12,6 @@ import org.springframework.util.CollectionUtils;
 import pers.liujunyi.cloud.centre.api.domain.dto.UserDetailsInfoDto;
 import pers.liujunyi.cloud.centre.service.user.UserAuthService;
 import pers.liujunyi.cloud.common.redis.RedisTemplateUtils;
-import pers.liujunyi.cloud.common.util.SecurityLocalContext;
 import pers.liujunyi.cloud.common.vo.BaseRedisKeys;
 import pers.liujunyi.cloud.security.entity.authorization.MenuResource;
 import pers.liujunyi.cloud.security.entity.authorization.RoleInfo;
@@ -61,15 +61,21 @@ public class UserAuthServiceImpl implements UserAuthService {
                 ConfigAttribute configAttribute = iterator.next();
                 String needRole = configAttribute.getAttribute();
                 // 当前登录人的角色权限授权码
-                String[] authorities = SecurityLocalContext.getAuthorities();
-                for(String authoritie : authorities){
-                    //authoritie 为用户所被赋予的权限。 needRole 为访问相应的资源应该具有的权限。
-                    //判断两个请求的url的权限和用户具有的权限是否相同，如相同，允许访问 权限就是那些以ROLE_为前缀的角色
-                    if (needRole.trim().equals(authoritie.trim())){
-                        //匹配到对应的角色，则允许通过
-                        return true;
+                Object result = this.redisTemplateUtil.hget(BaseRedisKeys.USER_AUTHORITIES_TOKEN, token);
+                if (result != null) {
+                    JSONArray authorities = JSONArray.parseArray(result.toString());
+                    int size = authorities.size();
+                    for(int i = 0; i < size; i++) {
+                        String authoritie = (String) authorities.getJSONObject(i).get("authority");
+                        //authoritie 为用户所被赋予的权限。 needRole 为访问相应的资源应该具有的权限。
+                        //判断两个请求的url的权限和用户具有的权限是否相同，如相同，允许访问 权限就是那些以ROLE_为前缀的角色
+                        if (needRole.trim().equals(authoritie)){
+                            //匹配到对应的角色，则允许通过
+                            return true;
+                        }
                     }
                 }
+
             }
         }
         return false;

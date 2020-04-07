@@ -23,6 +23,7 @@ import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
  * exclude = DataSourceAutoConfiguration.class 解决 ：Consider defining a bean of type 'javax.sql.DataSource' in your configuration.
  * 开启增强代理 @EnableAspectJAutoProxy
  * 开启加解密自动配置 @EnableEncrypt
+ * Spring boot 在加载配置顺序：本地配置文件 --> Config Server -->application
  * @EnableDiscoveryClient 注册服务至Nacos。
  * @author
  */
