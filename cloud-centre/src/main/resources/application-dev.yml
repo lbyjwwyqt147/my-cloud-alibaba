@@ -1,30 +1,20 @@
 server:
   port: 18082
   tomcat:
-      uri-encoding: utf-8
+    uri-encoding: utf-8
 # 系统参数 信息
 data:
   # 域名设置 跨域
   allowedOrigin: '*'
   # 直接访问 http://localhost:18082 时 返回信息设置
   indexView: '请访问：http://localhost:18082/swagger-ui.html  查看API文档'
-  # redis 是否默填充application name 作为redis key 的前缀   true 填充 false 不填充   例如：photo_album:user    photo_album:为自动填充
+  # redis 是否默填充application name 作为redis key 的前缀   true 填充 false 不填充   例如：cloud-centre:user    cloud-centre:为自动填充
   redisPrefixion: true
   # cloud_core 地址
   cloud:
     url: http://127.0.0.1:18080/api/
-
-  security:
-    # 不需要权限认证的资源
-    antMatchers:
-      /oauth/**,
-      /api/*/user/login,
-      /api/user/login,
-      /api/*/out,
-      /api/*/user/out,
-      /api/*/ignore/**,
-      /api/*/table/**,
-      /api/*/tree/**
+  user:
+    client: http://127.0.0.1:18082/api/
 
 spring:
   datasource:
@@ -218,9 +208,6 @@ spring:
             dataId: ${spring.application.name}-degrade-rules
             data-type: json
             rule-type: flow
-feign:
-  sentinel:
-    enabled: true
 
 dubbo:
   #Dubbo 服务暴露的协议配置，其中子属性 name 为协议名称，port 为协议端口（ -1 表示自增端口，从 20880 开始）

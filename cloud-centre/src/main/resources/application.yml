@@ -66,3 +66,22 @@ management:
     web:
       exposure:
         include: '*'
+#开启 sentinel 对 feign 的支持
+feign:
+  sentinel:
+    enabled: true
+
+data:
+  security:
+    # 不需要权限认证的资源
+    antMatchers:
+      /oauth/**,
+      /api/*/user/login,
+      /api/user/login,
+      /api/*/out,
+      /api/*/user/out,
+      /api/*/ignore/**,
+      /api/*/table/**,
+      /api/*/tree/**,
+      /favicon.ico,
+      /,
