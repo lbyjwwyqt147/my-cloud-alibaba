@@ -13,6 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
 public class CloudGatewayApplication {
 
     public static void main(String[] args) {
+        //解决 WARN No Root logger was configured, creating default ERROR-level Root logger with Console appender
+        System.setProperty("nacos.logging.default.config.enabled", "false");
         SpringApplication.run(CloudGatewayApplication.class, args);
     }
 

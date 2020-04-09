@@ -1,0 +1,59 @@
+#   测试环境：java -jar file-server.jar --spring.profiles.active=test
+#   开发环境：java -jar flie-server.jar --spring.profiles.active=dev
+#   生产环境：java -jar file-server.jar --spring.profiles.active=prod
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: dev
+  # 名称必须配置 服务名称尽量用-，不要用_，不要用特殊字符
+  application:
+    name: cloud-gateway
+  main:
+    # 解决  and overriding is disabled.
+    allow-bean-definition-overriding: true
+
+feign:
+  sentinel:
+    enabled: true
+
+  # 使用 swagger 如果字段的类型为Long或是int类型 后台会报java.lang.NumberFormatException: For input string: ""；忽略这个错误
+logging:
+  level:
+    io.swagger.models.parameters.AbstractSerializableParameter: error
+    org.springframework.security: DEBUG
+    org.springframework.gateway: DEBUG
+
+# 暴露所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
+data:
+  # 需要签名认证的资源
+  sign:
+    matchStart:
+      /centre/api/*/verify/**,
+      /album/api/*/verify/**
+  security:
+    # 不需要权限认证的资源
+    antMatchers:
+      /oauth/**,
+      /api/*/user/login,
+      /api/user/login,
+      /api/*/out,
+      /api/*/user/out,
+      /api/*/ignore/**,
+      /api/*/table/**,
+      /api/*/tree/**,
+      /favicon.ico,
+      /
+
+    # 资源认证服务地址
+    user-authorization-uri: http://cloud-centre/

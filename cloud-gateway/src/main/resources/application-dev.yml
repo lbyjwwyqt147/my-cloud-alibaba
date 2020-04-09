@@ -1,0 +1,103 @@
+server:
+  port: 18848
+
+spring:
+  cloud:
+    # nacos
+    nacos:
+      discovery:
+        # 注册中心地址
+        server-addr: localhost:8848
+        register-enabled: true
+    # 网关
+    gateway:
+      discovery:
+        locator:
+          #支持服务实例名小写（如果nacos上的服务名是大写的话）
+          lower-case-service-id: true
+          #支持gateway到注册中心进行服务的注册和发现，打开后可以直接通过服务实例名访问。
+          enabled: true
+      routes:
+        #路由的ID，唯一。
+        # http请求地址包含/centre/api/** 就会转到  lb://cloud-centre 服务访问具体接口
+        - id: cloud-centre-router
+          #匹配路由的转发地址，lb是load balance缩写，后面带转发的服务实例名。
+          uri: lb://cloud-centre
+          #配置该路由的断言，有很多种断言方式，可以组合使用。最常用的Path是请求路径匹配。
+          predicates:
+            - Path=/centre/api/**,/centre/oauth/**
+          #过滤规则，也是有多种。这里StripPrefix用来截去Path前面的路径，从左边开始截，配1就截去1
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+          # 请求重试机制
+          args:
+            # 重试次数，默认值是 3 次
+            retries: 3
+            # 状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码）
+            series: SERVER_ERROR
+
+        # http请求地址包含/album/api/** 就会转到  lb://photo-album 服务访问具体接口
+        - id: photo-album-router
+          uri: lb://photo-album
+          predicates:
+            - Path=/album/api/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+          # 请求重试机制
+          args:
+            # 重试次数，默认值是 3 次
+            retries: 3
+            # 状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码）
+            series: SERVER_ERROR
+
+          # http请求地址包含/album/api/** 就会转到  lb://cloud-chat 服务访问具体接口
+        - id: cloud-chat-router
+          uri: lb://cloud-chat
+          predicates:
+            - Path=/chat/api/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+          # 请求重试机制
+          args:
+            # 重试次数，默认值是 3 次
+            retries: 3
+            # 状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码）
+            series: SERVER_ERROR
+
+  # RSA 加密
+  encrypt:
+    # RSA 私钥
+    privateKey:
+    # RSA 公钥
+    publicKey:
+    # AES 密钥
+    secretKey: dO6+g3+08ELBKtx/1/WBYQ==
+    # 签名过期时间 单位 分钟
+    signExpireTime: 10
+    # 开启调试模式，调试模式下不进行加解密操作，用于像Swagger这种在线API测试场景
+    debug: false
+
+# OAuth2 配置
+security:
+  oauth2:
+    #客户端 配置
+    client:
+      #指定获取access token的URI
+      access-token-uri: http://localhost:${server.port}/centre/oauth/token
+      #用户跳转去获取access token的URI.
+      user-authorization-uri: http://localhost:${server.port}/centre/oauth/authorize
+      #指定应用的client ID
+      client-id: cloud_centre
+    # 资源配置
+    resource:
+      # 资源ID
+      id: resource_id
+      #用户端点的URI，用于获取当前用户详细信息
+      user-info-uri:  http://cloud-centre/api/v1/ignore/user/info
+      prefer-token-info: false
