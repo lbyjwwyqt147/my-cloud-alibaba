@@ -7,8 +7,7 @@ spring:
     time-zone: GMT+8
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
-  profiles:
-    active: dev
+
   # 名称必须配置 服务名称尽量用-，不要用_，不要用特殊字符
   application:
     name: photo-album
