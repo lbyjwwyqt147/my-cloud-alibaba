@@ -84,4 +84,4 @@ data:
       /api/*/table/**,
       /api/*/tree/**,
       /favicon.ico,
-      /,
+      /

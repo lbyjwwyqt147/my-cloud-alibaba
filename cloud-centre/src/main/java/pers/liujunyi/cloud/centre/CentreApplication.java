@@ -1,5 +1,6 @@
 package pers.liujunyi.cloud.centre;
 
+import com.alibaba.csp.sentinel.annotation.aspectj.SentinelResourceAspect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
@@ -24,7 +25,7 @@ import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
  * 开启增强代理 @EnableAspectJAutoProxy
  * 开启加解密自动配置 @EnableEncrypt
  * Spring boot 在加载配置顺序：本地配置文件 --> Config Server -->application
- * @EnableDiscoveryClient 注册服务至Nacos。
+ * @EnableDiscoveryClient  表明是一个Nacos客户端，该注解是 SpringCloud 提供的原生注解。注册服务至Nacos。
  * @author
  */
 @EnableDiscoveryClient
@@ -47,6 +48,16 @@ public class CentreApplication {
     }
 
     /**
+     * SentinelResource 注解支持的配置Bean
+     * @return
+     */
+    @Bean
+    public SentinelResourceAspect sentinelResourceAspect() {
+        return new SentinelResourceAspect();
+    }
+
+
+    /**
      * blockHandler
      * 限流后处理的方法
      *
@@ -54,7 +65,7 @@ public class CentreApplication {
      * 限流后处理的类
      *
      * fallback
-     * 熔断后处理的方法
+     * 熔断后处理的方法 用于在抛出异常的时候提供 fallback 处理逻辑
      *
      * fallbackClass
      * 熔断后处理的类

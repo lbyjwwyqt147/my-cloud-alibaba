@@ -7,6 +7,7 @@ spring:
   #指定开发环境
   profiles:
     active: dev
+    namespace: 9c1b431c-dfc0-45e6-8f17-c9bcaac71edc
   main:
     #当遇到同样名字的时候，是否允许覆盖注册
     allow-bean-definition-overriding: true
@@ -18,7 +19,7 @@ spring:
         # 配置中心的地址
         server-addr: 127.0.0.1:8848
         #默认为Public命名空间,可以省略不写, 使用自定义命名空间，使用ID值
-        namespace: 9c1b431c-dfc0-45e6-8f17-c9bcaac71edc
+        namespace: ${spring.profiles.namespace}
         #指定配置群组 --如果是Public命名空间 则可以省略群组配置
         group: DEFAULT_GROUP
         #文件名 -- 如果没有配置则默认为 ${spring.appliction.name}

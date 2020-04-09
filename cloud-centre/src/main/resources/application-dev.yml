@@ -186,28 +186,92 @@ spring:
     # 配置服务注册中心
     nacos:
       discovery:
+        # 指定注册中心的地址
         server-addr: 127.0.0.1:8848
         enabled: true
         register-enabled: true
       config:
+        # 配置中心地址
         server-addr: 127.0.0.1:8848
 
-    # 熔断
+    # 使用 Sentinel 作为熔断器
     sentinel:
       #取消Sentinel控制台懒加载
       eager: true
       transport:
-        #Sentinel 控制台地址
+        # 应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        port: 8719
+        # sentinel dashboard的访问地址
         dashboard: localhost:18849
+        # 应用与Sentinel控制台的心跳间隔时间
+        heartbeat-interval-ms: 60000
+      # 指定日志文件位置
       log:
         dir: ./logs/csp/
+      # 设置Sentinel Nacos数据源配置
       datasource:
-        ds1:
+        # 限流数据源 其中flow是数据源名，自己随便取名都可
+        flow:
           nacos:
+            # nacos的访问地址
             server-addr: 127.0.0.1:8848
-            dataId: ${spring.application.name}-degrade-rules
+            # nacos中存储规则的dataId,对于dataId使用了${spring.application.name}变量，这样可以根据应用名来区分不同的规则配置
+            data-id: ${spring.application.name}-sentinel-flow-rules
+            # nacos中存储规则的groupId
+            group-id: DEFAULT_GROUP
+            # nacos中命名空间
+            namespace: 9c1b431c-dfc0-45e6-8f17-c9bcaac71edc
             data-type: json
+            # 定义存储的规则类型
             rule-type: flow
+            #在nacos配置列表中添加配置cloud-centre-sentinel-flow-rules
+            #nacos中的规则会自动同步到sentinel控制台的流控规则中
+            #            [
+            #                {
+            #
+                                  # 资源名，资源名是限流规则的作用对象 可以是请求接口地址，也可以是具体接口位置：pers.liujunyi.cloud.centre.api.service.dict:getDictName(String parentDictCode, String dictCode)
+            #                     # 也可以是 @SentinelResource(value = "dictNameToMap" 中的 value值
+            #                     "resource":"/ignore/authority/authentication",
+            #                    # 流控针对的调用来源 default，代表不区分调用来源
+            #                    "limitApp":"default",
+                                  # 限流阈值类型，QPS 或线程数模式 0:基于线程数 1: 基于QPS    默认：QPS 模式
+            #                    "grade":1,
+                                 # 限流阈值
+            #                    "count":1,
+                                  # 判断的根据是资源自身，还是根据其它关联资源 (refResource)，还是根据链路入口 默认：根据资源自身
+            #                    "strategy":0,
+                                 # 限流行为（0: 直接拒绝 1:慢启动模式 2: 排队等待 ） 默认：0 直接拒绝
+            #                    "controlBehavior":0,
+            #                    "clusterMode":false
+            #                }
+            #            ]
+
+        # 降级数据源 其中degrade是数据源名，自己随便取名都可
+        degrade:
+          nacos:
+            # nacos的访问地址
+            server-addr: 127.0.0.1:8848
+            # nacos中存储规则的dataId,对于dataId使用了${spring.application.name}变量，这样可以根据应用名来区分不同的规则配置
+            data-id: ${spring.application.name}-sentinel-degrade-rules
+            # nacos中存储规则的groupId
+            group-id: DEFAULT_GROUP
+            # nacos中命名空间
+            namespace: 9c1b431c-dfc0-45e6-8f17-c9bcaac71edc
+            data-type: json
+            # 定义存储的规则类型
+            rule-type: degrade
+
+        #    [
+       #     {
+        #      "resource":"dictNameToMapList",
+               # //降级  0: 代表一秒内该资源的平均响应时间  1: 异常比例  2 : 异常数
+       #       "grade":0,
+               #  阀值
+       #       "count":10,
+               # 降级的时间，单位为 s
+       #       "timeWindow":10
+       #     }
+      #      ]
 
 dubbo:
   #Dubbo 服务暴露的协议配置，其中子属性 name 为协议名称，port 为协议端口（ -1 表示自增端口，从 20880 开始）

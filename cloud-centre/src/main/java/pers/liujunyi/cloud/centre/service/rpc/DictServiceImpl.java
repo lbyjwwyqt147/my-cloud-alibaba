@@ -1,5 +1,7 @@
 package pers.liujunyi.cloud.centre.service.rpc;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,13 +34,40 @@ public class DictServiceImpl implements DictService {
         return dictUtil.getDictName(parentDictCode, dictCode);
     }
 
+    @SentinelResource(value = "dictNameToMap", blockHandler = "blockHandler", fallback = "fallbackHandler")
     @Override
     public Map<String, String> getDictNameToMap(String fullParentCode) {
         return dictUtil.getDictNameToMap(fullParentCode);
     }
 
+    /**
+     * @SentinelResource 熔断限流配置
+     * value：资源名称，必需项（不能为空）
+     * blockHandler 可选项 blockHandler对应处理 BlockException 的函数名称
+     * fallback fallback 函数名称，可选项，用于在抛出异常的时候提供 fallback 处理逻辑
+     * @param parentDictCodes  父级 dict code
+     * @return
+     */
+    @SentinelResource(value = "dictNameToMapList", blockHandler = "blockHandler", fallback = "fallbackHandler")
     @Override
     public Map<String, Map<String, String>> getDictNameToMapList(List<String> parentDictCodes) {
         return dictUtil.getDictNameToMapList(parentDictCodes);
+    }
+
+    /**
+     * 限流与阻塞处理
+     * @param obj
+     * @param ex
+     */
+    public Object blockHandler(Object obj, BlockException ex) {
+        return null;
+    }
+
+    /**
+     * 熔断与降级处理
+     * @param obj
+     */
+    public Object fallbackHandler(Object obj, Throwable ex) {
+        return null;
     }
 }
