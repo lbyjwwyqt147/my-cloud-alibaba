@@ -20,8 +20,10 @@ import pers.liujunyi.cloud.photo.entity.album.RollingPicture;
 import pers.liujunyi.cloud.photo.repository.mongo.album.RollingPictureMongoRepository;
 import pers.liujunyi.cloud.photo.service.album.RollingPictureMongoService;
 import pers.liujunyi.cloud.photo.util.Constant;
+import pers.liujunyi.cloud.photo.util.DictConstant;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /***
@@ -42,7 +44,7 @@ public class RollingPictureMongoServiceImpl extends BaseMongoServiceImpl<Rolling
     private RollingPictureMongoRepository rollingPictureMongoRepository;
 
     @Reference
-    DictService dictService;
+    private DictService dictService;
 
     public RollingPictureMongoServiceImpl(BaseMongoRepository<RollingPicture, Long> baseMongoRepository) {
         super(baseMongoRepository);
@@ -60,10 +62,23 @@ public class RollingPictureMongoServiceImpl extends BaseMongoServiceImpl<Rolling
         List<RollingPicture> searchPageResults =  this.mongoDbTemplate.find(searchQuery, RollingPicture.class);
         List<RollingPictureVo> resultDataList = new CopyOnWriteArrayList<>();
         if (!CollectionUtils.isEmpty(searchPageResults)) {
+            List<String> dictParentCodes = new CopyOnWriteArrayList<>();
+            dictParentCodes.add(DictConstant.PAGE_CODE);
+            dictParentCodes.add(DictConstant.PAGE_POSITION);
+            Map<String, Map<String, String>> dictMap = this.dictService.getDictNameToMapList(dictParentCodes);
             searchPageResults.stream().forEach(item -> {
-                RollingPictureVo RollingPictureVo = DozerBeanMapperUtil.copyProperties(item, RollingPictureVo.class);
-
-                resultDataList.add(RollingPictureVo);
+                RollingPictureVo rollingPictureVo = DozerBeanMapperUtil.copyProperties(item, RollingPictureVo.class);
+                if (dictMap != null) {
+                    Map<String, String> pageCodeMap = dictMap.get(DictConstant.PAGE_CODE);
+                    if (pageCodeMap != null) {
+                        rollingPictureVo.setPageText(pageCodeMap.get(item.getPageCode()));
+                    }
+                    Map<String, String> positionMap = dictMap.get(DictConstant.PAGE_POSITION);
+                    if (positionMap != null) {
+                        rollingPictureVo.setPositionText(positionMap.get(item.getPagePosition()));
+                    }
+                }
+                resultDataList.add(rollingPictureVo);
             });
         }
         ResultInfo result = ResultUtil.success(resultDataList);

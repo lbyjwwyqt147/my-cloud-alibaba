@@ -23,5 +23,5 @@ public interface AlbumMongoRepository extends BaseMongoRepository<Album, Long> {
      * @param status
      * @return
      */
-    List<Album> findByAlbumStatusOrderByIdAsc(Byte status);
+    List<Album> findByAlbumStatusOrderByIdDesc(Byte status);
 }

@@ -1,30 +1,20 @@
 server:
   port: 18083
   tomcat:
-      uri-encoding: utf-8
+    uri-encoding: utf-8
 # 系统参数 信息
 data:
   # 域名设置 跨域
   allowedOrigin: '*'
-  # 直接访问 http://localhost:18083 时 返回信息设置
-  indexView: '请访问：http://localhost:18083/swagger-ui.html  查看API文档'
-  # redis 是否默填充application name 作为redis key 的前缀   true 填充 false 不填充   例如：photo_album:user    photo_album:为自动填充
+  # 直接访问 http://localhost:18082 时 返回信息设置
+  indexView: '请访问：http://localhost:18082/swagger-ui.html  查看API文档'
+  # redis 是否默填充application name 作为redis key 的前缀   true 填充 false 不填充   例如：photo-album:user    photo-album:为自动填充
   redisPrefixion: true
   # cloud_core 地址
   cloud:
-    url: http://127.0.0.1:18080/api
-
-  security:
-    # 不需要权限认证的资源
-    antMatchers:
-      /oauth/**,
-      /api/*/user/login,
-      /api/user/login,
-      /api/*/out,
-      /api/*/user/out,
-      /api/*/ignore/**,
-      /api/*/table/**,
-      /api/*/tree/**
+    url: http://127.0.0.1:18080/api/
+  user:
+    client: http://localhost:18848/centre/api/v1
 
 spring:
   datasource:
@@ -43,7 +33,7 @@ spring:
       max-active: 20
       # 配置一个连接在池中最小生存的时间，单位是毫秒
       min-evictable-idle-time-millis: 300000
-     # max-evictable-idle-time-millis: 600000
+      # max-evictable-idle-time-millis: 600000
       max-open-prepared-statements: 60000
       # 打开PSCache，并且指定每个连接上PSCache的大小
       pool-prepared-statements: true
@@ -122,7 +112,7 @@ spring:
       repositories:
         enabled: false  # true 会出现 Spring Data Redis - Could not safely identify store assignment for repository candidate interface pers.liujunyi.cloud.photo.repository.jpa.album.AlbumRepository.
     mongodb:
-      uri: mongodb://101.132.136.225:27017,101.132.136.225:27018/cloud-centre?replicaSet=rs
+      uri: mongodb://101.132.136.225:27017,101.132.136.225:27018/photo-album?replicaSet=rs
       #host: 101.132.136.225:27017,101.132.136.225:27018
       #port: 27017
       #username: root
@@ -164,7 +154,7 @@ spring:
     host: 101.132.136.225
     port: 6379
     password:
-    database: 6
+    database: 5
     jedis:
       pool:
         #最大连接数
@@ -191,36 +181,97 @@ spring:
     # 开启调试模式，调试模式下不进行加解密操作，用于像Swagger这种在线API测试场景
     debug: false
 
-  # 配置服务注册中心
+
   cloud:
+    # 配置服务注册中心
     nacos:
       discovery:
+        # 指定注册中心的地址
         server-addr: 127.0.0.1:8848
         enabled: true
         register-enabled: true
       config:
+        # 配置中心地址
         server-addr: 127.0.0.1:8848
-    # 熔断
+
+    # 使用 Sentinel 作为熔断器
     sentinel:
       #取消Sentinel控制台懒加载
       eager: true
       transport:
-        #Sentinel 控制台地址
+        # 应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        port: 8719
+        # sentinel dashboard的访问地址
         dashboard: localhost:18849
+        # 应用与Sentinel控制台的心跳间隔时间
+        heartbeat-interval-ms: 60000
+      # 指定日志文件位置
       log:
         dir: ./logs/csp/
+      # 设置Sentinel Nacos数据源配置
       datasource:
-        ds1:
+        #其中flow是数据源名，自己随便取名都可
+        flow:
           nacos:
+            # nacos的访问地址
             server-addr: 127.0.0.1:8848
-            dataId: ${spring.application.name}-degrade-rules
+            # nacos中存储规则的dataId,对于dataId使用了${spring.application.name}变量，这样可以根据应用名来区分不同的规则配置
+            data-id: ${spring.application.name}-sentinel-flow-rules
+            # nacos中存储规则的groupId
+            group-id: DEFAULT_GROUP
+            # nacos中命名空间
+            namespace: 9c1b431c-dfc0-45e6-8f17-c9bcaac71edc
             data-type: json
+            # 定义存储的规则类型
             rule-type: flow
-feign:
-  sentinel:
-    enabled: true
+              #在nacos配置列表中添加配置photo-album-sentinel-flow-rules
+              #nacos中的规则会自动同步到sentinel控制台的流控规则中
+              #            [
+              #                {
+              #                    "app":"photo-album",
+              # 资源名，资源名是限流规则的作用对象 可以是请求接口地址，也可以是具体接口位置：pers.liujunyi.cloud.centre.api.service.dict:getDictName(String parentDictCode, String dictCode)
+              #                    "resource":"/ignore/authority/authentication",
+              #                    # 流控针对的调用来源 default，代表不区分调用来源
+              #                    "limitApp":"default",
+              # 限流阈值类型，QPS 或线程数模式  默认：QPS 模式
+              #                    "grade":1,
+              # 限流阈值
+              #                    "count":1,
+              # 判断的根据是资源自身，还是根据其它关联资源 (refResource)，还是根据链路入口 默认：根据资源自身
+              #                    "strategy":0,
+            # 流控效果（直接拒绝 / 排队等待 / 慢启动模式） 默认：直接拒绝
+            #                    "controlBehavior":0,
+            #                    "clusterMode":false
+            #                }
+            #            ]
 
-# ------- dubbo配置 ---------
+        #其中degrade是数据源名，自己随便取名都可
+        degrade:
+          nacos:
+            # nacos的访问地址
+            server-addr: 127.0.0.1:8848
+            # nacos中存储规则的dataId,对于dataId使用了${spring.application.name}变量，这样可以根据应用名来区分不同的规则配置
+            data-id: ${spring.application.name}-sentinel-degrade-rules
+            # nacos中存储规则的groupId
+            group-id: DEFAULT_GROUP
+            # nacos中命名空间
+            namespace: 9c1b431c-dfc0-45e6-8f17-c9bcaac71edc
+            data-type: json
+            # 定义存储的规则类型
+            rule-type: degrade
+              #    [
+              #     {
+              #      "resource":"dictNameToMapList",
+              # //降级  0: 代表一秒内该资源的平均响应时间  1: 异常比例  2 : 异常数
+              #       "grade":0,
+              #  阀值
+              #       "count":10,
+              # 降级的时间，单位为 s
+              #       "timeWindow":10
+            #     }
+            #      ]
+
+#  dubbo配置
 dubbo:
   protocol:
     name: dubbo
@@ -240,7 +291,7 @@ security:
       # 资源ID
       id: resource_id
       #用户端点的URI，用于获取当前用户详细信息
-      user-info-uri:  http://localhost:18848/centre/api/v1/ignore/user/info
+      user-info-uri: http://localhost:18848/centre/api/v1/ignore/user/info
       prefer-token-info: false
 
 # xxl-job  任务调度执行器配置
@@ -254,9 +305,9 @@ xxl:
     #分别配置执行器的名称、ip地址、端口号
     #注意：如果配置多个执行器时，防止端口冲突
     executor:
-      appname: xxl-job-executor-photo
+      appname: xxl-job-executor-centre
       ip: 127.0.0.1
-      port: 9899
+      port: 9991
 
       #执行器运行日志文件存储的磁盘位置，需要对该路径拥有读写权限
       logpath: /data/applogs/xxl-job/jobhandler

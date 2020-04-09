@@ -21,6 +21,7 @@ import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
 import pers.liujunyi.cloud.photo.util.SentinelExceptionHandler;
 
 /**
+ * @EnableDiscoveryClient 表明是一个Nacos客户端
  * @author ljy
  */
 @EnableDiscoveryClient

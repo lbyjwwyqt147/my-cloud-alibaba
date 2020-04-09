@@ -112,7 +112,7 @@ public class AlbumMongoServiceImpl extends BaseMongoServiceImpl<Album, Long> imp
 
     @Override
     public ResultInfo albumComboBox() {
-        List<Album> searchList = this.albumMongoRepository.findByAlbumStatusOrderByIdAsc(Constant.ENABLE_STATUS);
+        List<Album> searchList = this.albumMongoRepository.findByAlbumStatusOrderByIdDesc(Constant.ENABLE_STATUS);
         List<Map<String, String>> resultData = new CopyOnWriteArrayList<>();
         Map<String, String> map = new ConcurrentHashMap<>();
         map.put("id", "");
