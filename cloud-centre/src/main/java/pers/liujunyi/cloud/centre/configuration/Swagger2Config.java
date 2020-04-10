@@ -17,8 +17,8 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /***
@@ -69,9 +69,8 @@ public class Swagger2Config {
                 .build()
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())
-                .enableUrlTemplating(true)
-                .pathMapping("/")
-                .directModelSubstitute(LocalDate.class, String.class)
+                // 将Date类型全部转为Long类型
+                .directModelSubstitute(Date.class, String.class)
                 .genericModelSubstitutes(ResponseEntity.class)
                 .globalOperationParameters(headerParameters);
     }
