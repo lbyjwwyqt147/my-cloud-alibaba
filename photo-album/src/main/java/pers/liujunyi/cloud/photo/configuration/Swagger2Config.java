@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -38,6 +40,21 @@ public class Swagger2Config {
      */
     @Bean
     public Docket customDocket() {
+        /** 添加head参数 */
+        List<Parameter> headerParameters = new ArrayList<>();
+        ParameterBuilder tokenPar = new ParameterBuilder();
+        tokenPar.name("Authorization").description("Authorization 令牌").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        headerParameters.add(tokenPar.build());
+        ParameterBuilder tenementPar = new ParameterBuilder();
+        tenementPar.name("tenement").description("租户").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        headerParameters.add(tenementPar.build());
+        ParameterBuilder signPar = new ParameterBuilder();
+        signPar.name("sign").description("签名").modelRef(new ModelRef("string")).parameterType("header").required(false).build();
+        headerParameters.add(signPar.build());
+        ParameterBuilder subscriberPar = new ParameterBuilder();
+        subscriberPar.name("userId").description("当前登录用户ID").modelRef(new ModelRef("Long")).parameterType("header").required(false).build();
+        headerParameters.add(subscriberPar.build());
+
         /** 指定需要扫描 的 controller 包路径   */
         List<String> basePackageList = new ArrayList<>();
         basePackageList.add("pers.liujunyi.cloud.photo.controller");
@@ -54,7 +71,8 @@ public class Swagger2Config {
                 .enableUrlTemplating(true)
                 .pathMapping("/")
                 .directModelSubstitute(LocalDate.class, String.class)
-                .genericModelSubstitutes(ResponseEntity.class);
+                .genericModelSubstitutes(ResponseEntity.class)
+                .globalOperationParameters(headerParameters);
     }
 
     /**
