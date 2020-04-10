@@ -69,7 +69,7 @@ public class Swagger2Config {
                 .build()
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())
-                // 将Date类型全部转为Long类型
+                // 将Date类型全部转为String类型
                 .directModelSubstitute(Date.class, String.class)
                 .genericModelSubstitutes(ResponseEntity.class)
                 .globalOperationParameters(headerParameters);
