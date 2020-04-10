@@ -15,6 +15,8 @@ data:
     url: http://127.0.0.1:18080/api/
   user:
     client: http://localhost:18848/centre/api/v1
+  logs:
+    client: http://cloud-logs/api/
 
 spring:
   datasource:
@@ -154,7 +156,7 @@ spring:
     host: 127.0.0.1
     port: 6379
     password:
-    database: 5
+    database: 7
     jedis:
       pool:
         #最大连接数

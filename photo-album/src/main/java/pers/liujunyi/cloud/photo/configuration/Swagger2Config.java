@@ -40,8 +40,7 @@ public class Swagger2Config {
     public Docket customDocket() {
         /** 指定需要扫描 的 controller 包路径   */
         List<String> basePackageList = new ArrayList<>();
-        basePackageList.add("pers.liujunyi.cloud.centre.controller");
-        basePackageList.add("pers.liujunyi.cloud.security.controller");
+        basePackageList.add("pers.liujunyi.cloud.photo.controller");
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .enable(true)
@@ -65,9 +64,9 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //页面标题
-                .title("centre 管理 RESTful API ")
+                .title("相册系统 管理 RESTful API ")
                 //创建人
-                .contact(new Contact("ljy", "http://127.0.0.1:18081/swagger-ui.html", ""))
+                .contact(new Contact("ljy", "http://127.0.0.1:18083/swagger-ui.html", ""))
                 //版本号
                 .version("1.0")
                 //描述
