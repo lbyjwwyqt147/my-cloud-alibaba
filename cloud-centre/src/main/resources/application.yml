@@ -74,6 +74,7 @@ data:
   security:
     # 不需要权限认证的资源
     antMatchers:
+      /,
       /oauth/**,
       /api/*/user/login,
       /api/user/login,
@@ -83,4 +84,9 @@ data:
       /api/*/table/**,
       /api/*/tree/**,
       /favicon.ico,
-      /
+      /swagger-ui.html,
+      /webjars/**,
+      /swagger-resources/**,
+      /csrf,
+      /v2/**,
+      /error

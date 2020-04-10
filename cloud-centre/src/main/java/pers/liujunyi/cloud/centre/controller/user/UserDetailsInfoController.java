@@ -50,7 +50,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "保存数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1")
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1")
     })
     @PostMapping(value = "verify/staff/s")
     @ApiVersion(1)
@@ -67,7 +67,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "删除多条数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "ids", value = "ids",  required = true, dataType = "String"),
             @ApiImplicitParam(name = "otherIds", value = "账户id",  required = true, dataType = "String")
     })
@@ -85,7 +85,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "分页列表数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1")
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1")
     })
     @GetMapping(value = "table/staff/g")
     @ApiVersion(1)
@@ -102,7 +102,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "修改数据状态")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "ids", value = "ids",  required = true, dataType = "String"),
             @ApiImplicitParam(name = "status", value = "status",  required = true, dataType = "integer"),
             @ApiImplicitParam(name = "otherIds", value = "账户id",  required = true, dataType = "integer")
@@ -120,7 +120,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "根据id 获取详细信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "id", value = "id", paramType = "path",   required = true, dataType = "Long")
     })
     @GetMapping(value = "table/staff/{id}")
@@ -136,7 +136,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "用户下拉框数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
     @GetMapping(value = "table/staff/select")
     @ApiVersion(1)
@@ -151,7 +151,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "根据账户id  获取详细信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "staffAccountsId", value = "staffAccountsId", paramType = "path",   required = true, dataType = "Long")
     })
     @GetMapping(value = "table/staff/g/accounts/{staffAccountsId}")
@@ -169,7 +169,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "根据账户id  获取详细信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "id", value = "id", paramType = "query",   required = true, dataType = "Long"),
             @ApiImplicitParam(name = "portrait", value = "头像地址", paramType = "query",   required = true, dataType = "String"),
             @ApiImplicitParam(name = "portraitId", value = "头像ID", paramType = "query",   required = true, dataType = "Long")
@@ -191,7 +191,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "根据id  设置离职信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "id", value = "id", paramType = "query",   required = true, dataType = "Long"),
             @ApiImplicitParam(name = "userId", value = "userId", paramType = "query",   required = true, dataType = "String"),
             @ApiImplicitParam(name = "date", value = "离职日期", paramType = "query",   required = true, dataType = "String"),
@@ -211,7 +211,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "API接口权限校验")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
     @GetMapping(value = "ignore/authority/authentication")
     @ApiVersion(1)
@@ -229,7 +229,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "获取用户详细信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
     @GetMapping(value = "ignore/user/details/{token}")
     @ApiVersion(5)
@@ -246,7 +246,7 @@ public class UserDetailsInfoController extends BaseController {
      */
     @ApiOperation(value = "同步数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
     @PostMapping(value = "verify/staff/sync")
     @ApiVersion(1)
