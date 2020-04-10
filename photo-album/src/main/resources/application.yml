@@ -75,10 +75,6 @@ data:
     # 不需要权限认证的资源
     antMatchers:
       /oauth/**,
-      /api/*/user/login,
-      /api/user/login,
-      /api/*/out,
-      /api/*/user/out,
       /api/*/ignore/**,
       /api/*/table/**,
       /api/*/tree/**,
