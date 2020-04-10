@@ -47,7 +47,7 @@ public class RollingPictureController extends BaseController {
      */
     @ApiOperation(value = "保存数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1")
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1")
     })
     @PostMapping(value = "verify/carousel/s")
     @ApiVersion(1)
@@ -64,7 +64,7 @@ public class RollingPictureController extends BaseController {
      */
     @ApiOperation(value = "删除多条数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1")
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1")
     })
     @DeleteMapping(value = "verify/carousel/d/b")
     @ApiVersion(1)
@@ -80,7 +80,7 @@ public class RollingPictureController extends BaseController {
      */
     @ApiOperation(value = "分页列表数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1")
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1")
     })
     @GetMapping(value = "table/carousel/g")
     @ApiVersion(1)
@@ -97,7 +97,7 @@ public class RollingPictureController extends BaseController {
      */
     @ApiOperation(value = "修改数据状态")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
     @PutMapping(value = "verify/carousel/p")
     @ApiVersion(1)
@@ -116,7 +116,7 @@ public class RollingPictureController extends BaseController {
      */
     @ApiOperation(value = "根据页面 和 页面位置 获取对应的图片")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "pageCode", value = "pageCode", paramType = "query",   required = true, dataType = "String"),
             @ApiImplicitParam(name = "pagePosition", value = "pagePosition", paramType = "query",   required = true, dataType = "String")
 
@@ -138,7 +138,7 @@ public class RollingPictureController extends BaseController {
      */
     @ApiOperation(value = "同步数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "version", value = "版本号", paramType = "query", required = true, dataType = "integer", defaultValue = "v1"),
+            @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
     @PostMapping(value = "verify/carousel/sync")
     @ApiVersion(1)
