@@ -67,7 +67,7 @@ public class Swagger2Config {
                 //页面标题
                 .title("centre 管理 RESTful API ")
                 //创建人
-                .contact(new Contact("ljy", "http://127.0.0.1:18081/swagger-ui.html", ""))
+                .contact(new Contact("ljy", "http://127.0.0.1:18082/swagger-ui.html", ""))
                 //版本号
                 .version("1.0")
                 //描述
