@@ -135,6 +135,10 @@ public class UserDetailsInfoMongoServiceImpl extends BaseMongoServiceImpl<UserDe
 
     @Override
     public UserDetailsInfoVo getStaffDetailsByUserAccountsId(Long staffAccountsId) {
+        UserDetailsInfo user = this.userDetailsInfoMongoRepository.findFirstByUserAccountsId(staffAccountsId);
+        if (user != null) {
+            return DozerBeanMapperUtil.copyProperties(user, UserDetailsInfoVo.class);
+        }
         return null;
     }
 

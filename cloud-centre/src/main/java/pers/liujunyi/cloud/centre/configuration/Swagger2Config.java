@@ -59,6 +59,7 @@ public class Swagger2Config {
         List<String> basePackageList = new ArrayList<>();
         basePackageList.add("pers.liujunyi.cloud.centre.controller");
         basePackageList.add("pers.liujunyi.cloud.security.controller");
+        basePackageList.add("pers.liujunyi.cloud.dict.controller");
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .enable(true)

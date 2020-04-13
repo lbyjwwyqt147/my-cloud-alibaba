@@ -89,4 +89,5 @@ data:
       /swagger-resources/**,
       /csrf,
       /v2/**,
-      /error
+      /error,
+      /heath

@@ -52,7 +52,8 @@ data:
       /api/*/table/**,
       /api/*/tree/**,
       /favicon.ico,
-      /
+      /,
+      /heath
 
     # 资源认证服务地址
     user-authorization-uri: http://cloud-centre/
