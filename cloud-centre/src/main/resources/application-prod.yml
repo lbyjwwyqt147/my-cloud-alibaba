@@ -14,9 +14,16 @@ data:
   cloud:
     url: http://127.0.0.1:18080/api/
   user:
-    client: http://127.0.0.1:18082/api/
+    # 系统用户所在地址
+    client: http://localhost:18848/centre/api/v1
+    userDetails:
+      # 根据token获取用户信息接口地址
+      findUserByToken: /ignore/accounts/token
+      # 根据user id 获取用户信息接口地址
+      findUserById: /ignore/accounts/id
   logs:
-    client: http://cloud-logs/api/
+    # 日志系统地址
+    client: http://localhost:18848/logs/api/
 
 spring:
   datasource:
