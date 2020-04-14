@@ -1,7 +1,6 @@
 package pers.liujunyi.cloud.logs.service.log;
 
 
-import pers.liujunyi.cloud.common.service.BaseJpaElasticsearchService;
 import pers.liujunyi.cloud.logs.entity.log.ChangeRecordLog;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @author ljy
  */
-public interface ChangeRecordLogService extends BaseJpaElasticsearchService<ChangeRecordLog, Long> {
+public interface ChangeRecordLogService  {
 
     /**
      * 保存数据

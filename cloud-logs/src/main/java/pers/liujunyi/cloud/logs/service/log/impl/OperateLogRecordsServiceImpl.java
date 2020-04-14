@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import pers.liujunyi.cloud.common.dto.blogs.OperateLogRecordsDto;
-import pers.liujunyi.cloud.common.repository.jpa.BaseJpaRepository;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
-import pers.liujunyi.cloud.common.service.impl.BaseJpaElasticsearchServiceImpl;
 import pers.liujunyi.cloud.common.util.DozerBeanMapperUtil;
 import pers.liujunyi.cloud.common.util.UserContext;
 import pers.liujunyi.cloud.logs.entity.log.ChangeRecordLog;
@@ -35,7 +33,7 @@ import java.util.List;
  * @author ljy
  */
 @Service
-public class OperateLogRecordsServiceImpl extends BaseJpaElasticsearchServiceImpl<OperateLogRecords, Long> implements OperateLogRecordsService {
+public class OperateLogRecordsServiceImpl implements OperateLogRecordsService {
 
     @Autowired
     private OperateLogRecordsRepository operateLogRecordsRepository;
@@ -43,11 +41,6 @@ public class OperateLogRecordsServiceImpl extends BaseJpaElasticsearchServiceImp
     private ChangeRecordLogService changeRecordLogService;
     @Autowired
     private OperateLogRecordsElasticsearchRepository operateLogRecordsElasticsearchRepository;
-
-
-    public OperateLogRecordsServiceImpl(BaseJpaRepository<OperateLogRecords, Long> baseRepository) {
-        super(baseRepository);
-    }
 
 
     @Override

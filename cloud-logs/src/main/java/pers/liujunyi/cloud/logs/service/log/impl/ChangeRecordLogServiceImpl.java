@@ -4,8 +4,6 @@ package pers.liujunyi.cloud.logs.service.log.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import pers.liujunyi.cloud.common.repository.jpa.BaseJpaRepository;
-import pers.liujunyi.cloud.common.service.impl.BaseJpaElasticsearchServiceImpl;
 import pers.liujunyi.cloud.logs.entity.log.ChangeRecordLog;
 import pers.liujunyi.cloud.logs.repository.elasticsearch.log.ChangeRecordLogElasticsearchRepository;
 import pers.liujunyi.cloud.logs.repository.jpa.log.ChangeRecordLogRepository;
@@ -25,17 +23,12 @@ import java.util.List;
  * @author ljy
  */
 @Service
-public class ChangeRecordLogServiceImpl extends BaseJpaElasticsearchServiceImpl<ChangeRecordLog, Long> implements ChangeRecordLogService {
+public class ChangeRecordLogServiceImpl implements ChangeRecordLogService {
 
     @Autowired
     private ChangeRecordLogRepository changeRecordLogRepository;
     @Autowired
     private ChangeRecordLogElasticsearchRepository changeRecordLogElasticsearchRepository;
-
-
-    public ChangeRecordLogServiceImpl(BaseJpaRepository<ChangeRecordLog, Long> baseRepository) {
-        super(baseRepository);
-    }
 
 
     @Override
@@ -55,7 +48,7 @@ public class ChangeRecordLogServiceImpl extends BaseJpaElasticsearchServiceImpl<
 
     @Override
     public int saveRecords(List<ChangeRecordLog> records) {
-        List<ChangeRecordLog> saveObject = this.changeRecordLogRepository.saveAll(records);
+        List<ChangeRecordLog> saveObject = (List<ChangeRecordLog>) this.changeRecordLogRepository.saveAll(records);
         if (saveObject == null || saveObject.size() == 0) {
             return 0;
         } else {

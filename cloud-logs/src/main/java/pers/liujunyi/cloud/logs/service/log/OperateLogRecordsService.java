@@ -3,8 +3,6 @@ package pers.liujunyi.cloud.logs.service.log;
 
 import pers.liujunyi.cloud.common.dto.blogs.OperateLogRecordsDto;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
-import pers.liujunyi.cloud.common.service.BaseJpaElasticsearchService;
-import pers.liujunyi.cloud.logs.entity.log.OperateLogRecords;
 
 /***
  * 文件名称: OperateLogRecordsService.java
@@ -17,7 +15,7 @@ import pers.liujunyi.cloud.logs.entity.log.OperateLogRecords;
  * @version 1.0
  * @author ljy
  */
-public interface OperateLogRecordsService extends BaseJpaElasticsearchService<OperateLogRecords, Long> {
+public interface OperateLogRecordsService  {
 
     /**
      * 保存数据

@@ -1,6 +1,7 @@
 package pers.liujunyi.cloud.logs.repository.jpa.log;
 
-import pers.liujunyi.cloud.common.repository.jpa.BaseJpaRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import pers.liujunyi.cloud.logs.entity.log.OperateLogRecords;
 
 /***
@@ -14,8 +15,8 @@ import pers.liujunyi.cloud.logs.entity.log.OperateLogRecords;
  * @version 1.0
  * @author ljy
  */
-public interface OperateLogRecordsRepository extends BaseJpaRepository<OperateLogRecords, Long> {
-
+@Repository
+public interface OperateLogRecordsRepository extends CrudRepository<OperateLogRecords, Long> {
 
 
 }
