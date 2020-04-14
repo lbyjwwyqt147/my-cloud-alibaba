@@ -34,6 +34,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -116,7 +122,7 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger2.version}</version>
         </dependency>
-        <!-- 使用log4j2　日志 -->
+        <!-- 支持log4j2的模块，注意把spring-boot-starter和spring-boot-starter-web包中的logging去掉 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>

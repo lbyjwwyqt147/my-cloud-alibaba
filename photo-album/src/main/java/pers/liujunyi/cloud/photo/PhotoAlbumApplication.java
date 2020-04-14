@@ -69,6 +69,8 @@ public class PhotoAlbumApplication {
         // 解决 Factory method 'elasticsearchClient' threw exception; nested exception is java.lang.IllegalStateException: availableProcessors is already set to [4], rejecting [4]
         //原因：程序的其他地方使用了Netty，这里指redis。这影响在实例化传输客户端之前初始化处理器的数量。 实例化传输客户端时，我们尝试初始化处理器的数量。 由于在其他地方使用Netty，因此已经初始化并且Netty会对此进行防范，因此首次实例化会因看到的非法状态异常而失败。
         System.setProperty("es.set.netty.runtime.available.processors", "false");
+        //解决 WARN No Root logger was configured, creating default ERROR-level Root logger with Console appender
+        System.setProperty("nacos.logging.default.config.enabled", "false");
         SpringApplication.run(PhotoAlbumApplication.class, args);
     }
 
