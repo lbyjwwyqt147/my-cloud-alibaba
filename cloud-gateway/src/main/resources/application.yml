@@ -56,4 +56,4 @@ data:
       /heath
 
     # 资源认证服务地址
-    user-authorization-uri: http://cloud-centre/
+    user-authorization-uri: http://localhost:${server.port}/centre/

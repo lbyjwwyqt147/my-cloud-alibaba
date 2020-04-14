@@ -1,0 +1,9 @@
+# 注册中心的应用名称
+cloud-centre:
+  ribbon:
+    # 配置的微服务的服务器ip端口  如果在RestTemplate 上使用了 @LoadBalanced  这下面就不能配置IP了 需要配置为注册中心的应用名称，否则要报错 java.lang.IllegalStateException: No instances available for
+    listOfServers: localhost:1001, localhost:1002,localhost:1003
+    # 使用的负载均衡策略   策略参考地址：https://blog.csdn.net/rickiyeat/article/details/64918756
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule
+    # 健康检测配置
+    NFLoadBalancerPingClassName: pers.liujunyi.cloud.gateway.loadbanlance.HealthExamination

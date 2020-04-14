@@ -19,6 +19,7 @@ spring:
           enabled: true
       routes:
         #路由的ID，唯一。
+        # 请求方式： 网关地址/centre/api/v1/list
         # http请求地址包含/centre/api/** 就会转到  lb://cloud-centre 服务访问具体接口
         - id: cloud-centre-router
           #匹配路由的转发地址，lb是load balance缩写，后面带转发的服务实例名。
@@ -38,6 +39,7 @@ spring:
             # 状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码）
             series: SERVER_ERROR
 
+        # 请求方式： 网关地址/album/api/v1/test
         # http请求地址包含/album/api/** 就会转到  lb://photo-album 服务访问具体接口
         - id: photo-album-router
           uri: lb://photo-album
@@ -99,5 +101,5 @@ security:
       # 资源ID
       id: resource_id
       #用户端点的URI，用于获取当前用户详细信息
-      user-info-uri:  http://cloud-centre/api/v1/ignore/user/info
+      user-info-uri:  http://localhost:${server.port}/centre/api/v1/ignore/user/info
       prefer-token-info: false

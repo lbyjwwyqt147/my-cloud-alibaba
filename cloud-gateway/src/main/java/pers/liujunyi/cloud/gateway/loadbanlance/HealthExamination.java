@@ -37,6 +37,7 @@ public class HealthExamination implements IPing {
             log.info("健康(心跳)检查 ping " + url + " error and response is " + heath.getBody());
             return false;
         } catch (Exception e) {
+            e.printStackTrace();
             log.info("健康(心跳)检查  ping " + url + " failed");
             return false;
         }
