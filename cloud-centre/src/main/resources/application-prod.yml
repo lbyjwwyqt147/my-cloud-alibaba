@@ -23,7 +23,7 @@ data:
       findUserById: /ignore/accounts/id
   logs:
     # 日志系统地址
-    client: http://localhost:18848/logs/api/
+    client: http://localhost:18848/logs/api/v1/
 
 spring:
   datasource:

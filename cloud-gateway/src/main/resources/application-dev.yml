@@ -56,11 +56,12 @@ spring:
             # 状态码配置（分段），符合某段状态码才会进行重试逻辑，默认值是 SERVER_ERROR，值是 5，也就是 5XX（5 开头的状态码）
             series: SERVER_ERROR
 
-          # http请求地址包含/album/api/** 就会转到  lb://cloud-chat 服务访问具体接口
-        - id: cloud-chat-router
-          uri: lb://cloud-chat
+          # 请求方式： 网关地址/album/api/v1/test
+          # http请求地址包含/logs/api/** 就会转到  lb://cloud-logs 服务访问具体接口
+        - id: cloud-logs-router
+          uri: lb://cloud-logs
           predicates:
-            - Path=/chat/api/**
+            - Path=/logs/api/**
           filters:
             - StripPrefix=1
             - name: Retry

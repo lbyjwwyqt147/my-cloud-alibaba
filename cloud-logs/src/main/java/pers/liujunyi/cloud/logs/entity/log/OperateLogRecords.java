@@ -76,8 +76,12 @@ public class OperateLogRecords extends BaseEntity {
     private String tableName;
 
     /** 操作方法名 */
-    @Column(length = 255, nullable = false, columnDefinition="varchar(255)  NOT NULL COMMENT '操作方法名'")
+    @Column(length = 50, nullable = false, columnDefinition="varchar(50)  NOT NULL COMMENT '操作方法名'")
     private String operateMethod;
+
+    /** 操作方法名路径 */
+    @Column(length = 1024, nullable = false, columnDefinition="varchar(1024)  NOT NULL COMMENT '方法名路径'")
+    private String methodPath;
 
     /** 说明 */
     @Field(type = FieldType.Auto, index = false)
@@ -86,7 +90,9 @@ public class OperateLogRecords extends BaseEntity {
 
     /** 参数 */
     @Field(type = FieldType.Auto, index = false)
-    @Column(length = 128, nullable = false, columnDefinition="varchar(128)  NOT NULL COMMENT '参数'")
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(nullable = true, columnDefinition="text  DEFAULT NULL COMMENT '参数'")
     private String parameters;
 
     /** 响应执行时间 */
@@ -94,12 +100,19 @@ public class OperateLogRecords extends BaseEntity {
     private Date responseStartTime;
 
     /** 响应结束时间 */
+    @Field(type = FieldType.Auto, index = false)
     @Column( columnDefinition = " timestamp DEFAULT NULL COMMENT '响应结束时间'")
     private Date responseEndTime;
 
     /** 消耗时间(ms) */
+    @Field(type = FieldType.Auto, index = false)
     @Column(length = 20, nullable = false, columnDefinition="bigint(20) NOT NULL COMMENT '消耗总时'")
     private Long expendTime;
+
+    /** 接口地址 */
+    @Field(type = FieldType.Auto, index = false)
+    @Column(length = 1024, nullable = false, columnDefinition="varchar(1024)  NOT NULL COMMENT '接口地址'")
+    private String urlAddress;
 
     /** 异常信息 */
     @Field(type = FieldType.Auto, index = false)
@@ -119,5 +132,12 @@ public class OperateLogRecords extends BaseEntity {
     @Field(type = FieldType.Auto, index = false)
     @Column(columnDefinition="tinyint(4) DEFAULT '0' COMMENT '操作状态 0:成功  1:失败  '")
     private Byte operateStatus;
+
+    /** header 信息 */
+    @Field(type = FieldType.Auto, index = false)
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(nullable = true, columnDefinition="text  DEFAULT NULL COMMENT 'header'")
+    private String headerNames;
 
 }

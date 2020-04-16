@@ -1,6 +1,7 @@
 package pers.liujunyi.cloud.logs.controller.log;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import pers.liujunyi.cloud.common.annotation.ApiVersion;
 import pers.liujunyi.cloud.common.controller.BaseController;
@@ -56,8 +58,9 @@ public class OperateLogRecordsController extends BaseController {
     })
     @PostMapping(value = "ignore/logs/records/s")
     @ApiVersion(1)
-    public ResultInfo saveRecord(OperateLogRecordsDto param) {
-        return this.operateLogRecordsService.saveRecord(param);
+    public ResultInfo saveRecord(@RequestBody String param) {
+        OperateLogRecordsDto record = JSONObject.parseObject(param, OperateLogRecordsDto.class);
+        return this.operateLogRecordsService.saveRecord(record);
     }
 
     /**

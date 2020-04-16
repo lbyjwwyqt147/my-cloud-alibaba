@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextListener;
 import pers.liujunyi.cloud.common.configuration.MySQLUpperCaseStrategy;
@@ -24,6 +25,7 @@ import pers.liujunyi.cloud.photo.util.SentinelExceptionHandler;
  * @EnableDiscoveryClient 表明是一个Nacos客户端
  * @author ljy
  */
+@EnableAsync
 @EnableDiscoveryClient
 @EnableEncrypt
 @EnableJpaAuditing

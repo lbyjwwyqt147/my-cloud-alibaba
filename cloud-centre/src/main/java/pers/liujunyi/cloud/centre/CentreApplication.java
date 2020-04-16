@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextListener;
 import pers.liujunyi.cloud.centre.util.SentinelExceptionHandler;
@@ -28,6 +29,7 @@ import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
  * @EnableDiscoveryClient  表明是一个Nacos客户端，该注解是 SpringCloud 提供的原生注解。注册服务至Nacos。
  * @author
  */
+@EnableAsync
 @EnableDiscoveryClient
 @EnableEncrypt
 @EnableJpaAuditing
