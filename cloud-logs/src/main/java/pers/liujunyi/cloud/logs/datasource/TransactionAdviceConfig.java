@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -18,6 +17,7 @@ import org.springframework.validation.BindException;
 import pers.liujunyi.cloud.common.exception.DescribeException;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,10 +49,9 @@ public class TransactionAdviceConfig {
     /**
      * 定义切点变量：拦截pers.liujunyi.cloud.logs.service包下所有类的所有方法,返回值类型任意的方法
      */
-    private static final String AOP_POINTCUT_EXPRESSION = "execution (* pers.liujunyi.cloud.*.service.*.*.*(..))";
+    private static final String AOP_POINTCUT_EXPRESSION = "execution(* pers.liujunyi.cloud.*.service..*.*(..))";
 
     @Autowired
-    @Lazy
     private PlatformTransactionManager transactionManager;
 
     @Bean
@@ -76,6 +75,7 @@ public class TransactionAdviceConfig {
         rollbackRules.add(new RollbackRuleAttribute(BindException.class));
         rollbackRules.add(new RollbackRuleAttribute(IOException.class));
         rollbackRules.add(new RollbackRuleAttribute(Throwable.class));
+        rollbackRules.add(new RollbackRuleAttribute(InvocationTargetException.class));
         requireRule.setRollbackRules(rollbackRules);
         requireRule.setReadOnly(false);
         /* PROPAGATION_REQUIRED:事务隔离性为1，若当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。这是默认值。 */

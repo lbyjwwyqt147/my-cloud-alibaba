@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -26,7 +26,7 @@ import java.sql.SQLException;
  * 其他说明:
  *            @EntityScan 扫描实体类位置
  *            @EnableTransactionManagement  开启注解事物   @EnableJpaRepositories 开启JPA存储库扫描
- *            EnableJpaRepositories 和 EnableMongoRepositories 不能在同一包下面
+ *            EnableJpaRepositories 和 EnableElasticsearchRepositories 不能在同一包下面
  *            @EntityScan 配置 实体类所在的路径  解决： Not a managed type:
  * 完成日期:2019年01月17日
  * 修改记录:
@@ -36,7 +36,7 @@ import java.sql.SQLException;
 @Configuration
 @EntityScan(basePackages = {"pers.liujunyi.cloud.logs.entity"})
 @EnableJpaRepositories(basePackages = {"pers.liujunyi.cloud.logs.repository.jpa"})
-@EnableMongoRepositories(basePackages = {"pers.liujunyi.cloud.logs.repository.elasticsearch"})
+@EnableElasticsearchRepositories(basePackages = {"pers.liujunyi.cloud.logs.repository.elasticsearch"})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class JpaRepositoriesConfig {
 
@@ -63,7 +63,7 @@ public class JpaRepositoriesConfig {
      * @param entityManagerFactory
      * @return
      */
-    @Bean
+    @Bean(name = "transactionManager")
     @Primary
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) throws SQLException {
         return new JpaTransactionManager(entityManagerFactory);

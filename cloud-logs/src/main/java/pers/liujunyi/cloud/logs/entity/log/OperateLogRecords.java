@@ -44,7 +44,7 @@ public class OperateLogRecords extends BaseEntity {
 
     /** 操作人编号 */
     @Field(type = FieldType.Auto, index = false)
-    @Column(length = 20, nullable = false, columnDefinition="varchar(20)  NOT NULL COMMENT '用户编号'")
+    @Column(length = 20,  columnDefinition="varchar(20)  DEFAULT NULL COMMENT '用户编号'")
     private String operateUserNumber;
 
     /** 操作人名称 */
@@ -54,6 +54,10 @@ public class OperateLogRecords extends BaseEntity {
     /** 用户类别   0：超级管理员 1：普通管理员 2：内部职工 3：普通用户   */
     @Column(columnDefinition=" tinyint(4) DEFAULT '2' COMMENT '用户类别   0：超级管理员 1：普通管理员 2：内部职工 3：普通用户 '")
     private Byte operateUserType;
+
+    /** 操作人登录帐号 */
+    @Column(length = 128,  columnDefinition="varchar(128)  DEFAULT NULL COMMENT '操作人登录帐号'")
+    private String operateUserAccount;
 
     /** 操作模块 */
     @Column(length = 32, nullable = false, columnDefinition="varchar(32)  NOT NULL COMMENT '操作模块'")
@@ -92,7 +96,7 @@ public class OperateLogRecords extends BaseEntity {
     @Field(type = FieldType.Auto, index = false)
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(nullable = true, columnDefinition="text  DEFAULT NULL COMMENT '参数'")
+    @Column(columnDefinition="text  DEFAULT NULL COMMENT '参数'")
     private String parameters;
 
     /** 响应执行时间 */
@@ -118,7 +122,7 @@ public class OperateLogRecords extends BaseEntity {
     @Field(type = FieldType.Auto, index = false)
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(nullable = false, columnDefinition="text  NOT NULL COMMENT '异常信息'")
+    @Column( columnDefinition="text DEFAULT NULL COMMENT '异常信息'")
     private String errorMessage;
 
     /** 操作结果 */
@@ -137,7 +141,7 @@ public class OperateLogRecords extends BaseEntity {
     @Field(type = FieldType.Auto, index = false)
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(nullable = true, columnDefinition="text  DEFAULT NULL COMMENT 'header'")
+    @Column(columnDefinition="text  DEFAULT NULL COMMENT 'header'")
     private String headerNames;
 
 }

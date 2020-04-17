@@ -1,6 +1,6 @@
 package pers.liujunyi.cloud.logs.repository.jpa.log;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import pers.liujunyi.cloud.logs.entity.log.ChangeRecordLog;
 
 /***
@@ -14,7 +14,7 @@ import pers.liujunyi.cloud.logs.entity.log.ChangeRecordLog;
  * @version 1.0
  * @author ljy
  */
-public interface ChangeRecordLogRepository extends CrudRepository<ChangeRecordLog, Long> {
+public interface ChangeRecordLogRepository extends JpaRepository<ChangeRecordLog, Long> {
 
 
 
