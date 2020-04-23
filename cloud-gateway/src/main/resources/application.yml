@@ -5,15 +5,19 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  mvc:
-    date-format: yyyy-MM-dd HH:mm:ss
-
   # 名称必须配置 服务名称尽量用-，不要用_，不要用特殊字符
   application:
     name: cloud-gateway
   main:
     # 解决  and overriding is disabled.
     allow-bean-definition-overriding: true
+  mvc:
+    # 支持put，delete等请求方式
+    hiddenmethod:
+      filter:
+        enabled: true
+    date-format: yyyy-MM-dd HH:mm:ss
+
 
 feign:
   sentinel:

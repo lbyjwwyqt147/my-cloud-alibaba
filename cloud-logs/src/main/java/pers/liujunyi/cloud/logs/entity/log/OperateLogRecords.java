@@ -80,7 +80,7 @@ public class OperateLogRecords extends BaseEntity {
     private String tableName;
 
     /** 操作方法名 */
-    @Column(length = 50, nullable = false, columnDefinition="varchar(50)  NOT NULL COMMENT '操作方法名'")
+    @Column(length = 128, nullable = false, columnDefinition="varchar(128)  NOT NULL COMMENT '操作方法名'")
     private String operateMethod;
 
     /** 操作方法名路径 */

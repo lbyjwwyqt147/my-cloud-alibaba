@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pers.liujunyi.cloud.centre.domain.user.UserDetailsInfoDto;
 import pers.liujunyi.cloud.centre.domain.user.UserDetailsInfoQueryDto;
+import pers.liujunyi.cloud.centre.entity.user.UserDetailsInfo;
 import pers.liujunyi.cloud.centre.service.user.UserAuthService;
 import pers.liujunyi.cloud.centre.service.user.UserDetailsInfoMongoService;
 import pers.liujunyi.cloud.centre.service.user.UserDetailsInfoService;
 import pers.liujunyi.cloud.common.annotation.ApiVersion;
+import pers.liujunyi.cloud.common.annotation.ControllerMethodLog;
 import pers.liujunyi.cloud.common.controller.BaseController;
 import pers.liujunyi.cloud.common.dto.IdParamDto;
 import pers.liujunyi.cloud.common.restful.ResultInfo;
 import pers.liujunyi.cloud.common.restful.ResultUtil;
+import pers.liujunyi.cloud.common.util.OperateLogType;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -48,6 +51,7 @@ public class UserDetailsInfoController extends BaseController {
      * @param param
      * @return
      */
+    @ControllerMethodLog(desc = "用户详情信息", operModule = "保存数据", operType = OperateLogType.ADD, serviceClass = UserDetailsInfoService.class, entityBeanClass = UserDetailsInfo.class)
     @ApiOperation(value = "保存数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1")
@@ -65,6 +69,7 @@ public class UserDetailsInfoController extends BaseController {
      * @param param 　 多个id 用 , 隔开
      * @return
      */
+    @ControllerMethodLog(desc = "用户详情信息", operModule = "批量删除", operType = OperateLogType.DELETE, serviceClass = UserDetailsInfoService.class, entityBeanClass = UserDetailsInfo.class)
     @ApiOperation(value = "删除多条数据")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
@@ -100,6 +105,7 @@ public class UserDetailsInfoController extends BaseController {
      * @param param
      * @return
      */
+    @ControllerMethodLog(desc = "用户详情信息", operModule = "修改数据状态", paramIsArray = true, operType = OperateLogType.UPDATE, serviceClass = UserDetailsInfoService.class, entityBeanClass = UserDetailsInfo.class, findDataMethod = "findByIdIn")
     @ApiOperation(value = "修改数据状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
@@ -167,7 +173,8 @@ public class UserDetailsInfoController extends BaseController {
      * @param portraitId
      * @return
      */
-    @ApiOperation(value = "根据账户id  获取详细信息")
+    @ControllerMethodLog(desc = "用户详情信息", operModule = "设置头像",  operType = OperateLogType.UPDATE, serviceClass = UserDetailsInfoService.class, entityBeanClass = UserDetailsInfo.class)
+    @ApiOperation(value = "设置头像")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
             @ApiImplicitParam(name = "id", value = "id", paramType = "query",   required = true, dataType = "Long"),
