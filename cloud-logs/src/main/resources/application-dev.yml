@@ -120,9 +120,9 @@ spring:
       repositories:
         enabled: false  # true 会出现 Spring Data Redis - Could not safely identify store assignment for repository candidate interface pers.liujunyi.cloud.photo.repository.jpa.album.AlbumRepository.
     mongodb:
-      uri: mongodb://101.132.136.225:27017,101.132.136.225:27018/photo-album?replicaSet=rs
+      uri: mongodb://101.132.136.225:27017,101.132.136.225:27018/${spring.application.name}?replicaSet=rs
       #业务数据库
-      database: cloud-logs
+      database: ${spring.application.name}
       # 副本集
       replica-set: rs
       always-use-m-beans: false
@@ -161,8 +161,8 @@ spring:
       cluster-name: docker-cluster
       properties:
         path:
-          logs: ./elasticsearch/log # elasticsearch日志存储目录
-          data: ./elasticsearch/data # elasticsearch数据存储目录
+          logs: ./logs/${spring.application.name}/elasticsearch/log # elasticsearch日志存储目录
+          data: ./logs/${spring.application.name}/elasticsearch/data # elasticsearch数据存储目录
         transport:
           tcp:
             connect_timeout: 120s  # 连接超时的时间

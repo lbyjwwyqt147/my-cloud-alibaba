@@ -121,13 +121,13 @@ spring:
       repositories:
         enabled: false  # true 会出现 Spring Data Redis - Could not safely identify store assignment for repository candidate interface pers.liujunyi.cloud.photo.repository.jpa.album.AlbumRepository.
     mongodb:
-      uri: mongodb://127.0.0.1:27017,127.0.0.1:27018/cloud-centre?replicaSet=rs
+      uri: mongodb://127.0.0.1:27017,127.0.0.1:27018/${spring.application.name}?replicaSet=rs
       #host: 127.0.0.1:27017,127.0.0.1:27018
       #port: 27017
       #username: root
       #password: root
       #业务数据库
-      database: cloud-centre
+      database: ${spring.application.name}
       # 副本集
       replica-set: rs
       always-use-m-beans: false
@@ -216,7 +216,7 @@ spring:
         heartbeat-interval-ms: 60000
       # 指定日志文件位置
       log:
-        dir: ./logs/csp/
+        dir: ./logs/${spring.application.name}/csp/
       # 设置Sentinel Nacos数据源配置
       datasource:
         # 限流数据源 其中flow是数据源名，自己随便取名都可
