@@ -57,7 +57,7 @@ public class Swagger2Config {
 
         /** 指定需要扫描 的 controller 包路径   */
         List<String> basePackageList = new ArrayList<>();
-        basePackageList.add("pers.liujunyi.cloud.photo.controller");
+        basePackageList.add("pers.liujunyi.cloud.photo.order.controller");
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .enable(true)
