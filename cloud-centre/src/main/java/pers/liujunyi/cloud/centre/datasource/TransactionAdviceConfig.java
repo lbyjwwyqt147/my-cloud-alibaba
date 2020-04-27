@@ -47,7 +47,7 @@ public class TransactionAdviceConfig {
     /**
      * 定义切点变量：拦截pers.liujunyi.cloud.centre.service包下所有类的所有方法,返回值类型任意的方法
      */
-    private static final String AOP_POINTCUT_EXPRESSION = "execution (* pers.liujunyi.cloud.centre.service.*.*.*(..))";
+    private static final String AOP_POINTCUT_EXPRESSION = "execution (* pers.liujunyi.cloud.*.service.*.*.*(..))";
 
     @Autowired
     @Lazy

@@ -1,22 +1,10 @@
 package pers.liujunyi.cloud.photo.order.datasource;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.sql.SQLException;
 
 
 /***
@@ -41,9 +29,9 @@ import java.sql.SQLException;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class JpaRepositoriesConfig {
 
-    @Autowired
+    /*@Autowired
     @Qualifier("dataSource")
-    private DataSource dataSource;
+    private DataSource dataSource;*/
 
     /**
      * mongoDb 事物
@@ -53,10 +41,10 @@ public class JpaRepositoriesConfig {
      * @param factory
      * @return
      */
-    @Bean(name = "mongoTransactionManager")
+   /* @Bean(name = "mongoTransactionManager")
     PlatformTransactionManager mongoTransactionManager(MongoDbFactory factory){
         return new MongoTransactionManager(factory);
-    }
+    }*/
 
     /**
      * jpa 事物
@@ -64,11 +52,11 @@ public class JpaRepositoriesConfig {
      * @param entityManagerFactory
      * @return
      */
-    @Primary
+  /*  @Primary
     @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) throws SQLException {
         return new JpaTransactionManager(entityManagerFactory);
     }
-
+*/
 
 }
