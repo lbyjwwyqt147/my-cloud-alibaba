@@ -38,7 +38,8 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
-
+  aop:
+    proxy-target-class: true
 
   servlet:
     multipart:
@@ -58,6 +59,7 @@ logging:
   level:
     io.swagger.models.parameters.AbstractSerializableParameter: error
     org.springframework.security: DEBUG
+    #io.seata: info
 
 # es mapper 文件路径
 es:

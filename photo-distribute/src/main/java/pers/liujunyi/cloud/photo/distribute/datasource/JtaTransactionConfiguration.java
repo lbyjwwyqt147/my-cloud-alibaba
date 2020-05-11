@@ -1,4 +1,4 @@
-package pers.liujunyi.cloud.photo.order.datasource;
+package pers.liujunyi.cloud.photo.distribute.datasource;
 
 import com.atomikos.icatch.jta.UserTransactionManager;
 import org.springframework.beans.factory.ObjectProvider;
@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.transaction.TransactionManagerCust
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -25,7 +24,7 @@ import java.util.Properties;
 
 /***
  * 文件名称: TransactionConfiguration
- * 文件描述: 
+ * 文件描述: Mongo DB 事物和MYsql事物 一致性配置  目前遇到问题有时可以回滚有时不能 原因还在研究中，如果需要使用则放开@Configuration 并注释掉 JpaRepositoriesConfig中的事物配置
  * 公 司:
  * 内容摘要:
  * 其他说明:
@@ -34,8 +33,8 @@ import java.util.Properties;
  * @version 1.0
  * @author ljy
  */
-@Configuration
-public class TransactionConfiguration {
+//@Configuration
+public class JtaTransactionConfiguration {
 
 
     @Autowired
@@ -66,6 +65,7 @@ public class TransactionConfiguration {
 
     /**
      * mysql 数据源
+     * mysql-connector-java 必须是8.0.11 如果版本高于8.0.11 则会报异常 java.lang.NoSuchMethodException: PropertySet.getBooleanReadableProperty(java.lang.String),
      * @return
      * @throws Exception
      */
@@ -108,6 +108,16 @@ public class TransactionConfiguration {
         prop.put("username", env.getProperty(prefix + "username"));
         prop.put("password", env.getProperty(prefix + "password"));
         prop.put("driverClassName", env.getProperty(prefix + "driver-class-name"));
+        prop.put("initialSize", env.getProperty(prefix + "druid.initial-size"));
+        prop.put("minIdle", env.getProperty(prefix + "druid.min-idle"));
+        prop.put("maxActive", env.getProperty(prefix + "druid.max-active"));
+        prop.put("maxWait", env.getProperty(prefix + "druid.max-wait"));
+        prop.put("timeBetweenEvictionRunsMillis", env.getProperty(prefix + "druid.time-between-eviction-runs-millis"));
+        prop.put("validationQuery", env.getProperty(prefix + "druid.validation-query"));
+        prop.put("testWhileIdle", env.getProperty(prefix + "druid.test-while-idle"));
+        prop.put("testOnBorrow", env.getProperty(prefix + "druid.test-on-borrow"));
+        prop.put("testOnReturn", env.getProperty(prefix + "druid.test-on-return"));
+        prop.put("filters", env.getProperty(prefix + "druid.filters"));
         return prop;
     }
 

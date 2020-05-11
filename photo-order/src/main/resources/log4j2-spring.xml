@@ -215,6 +215,11 @@
         </logger>
         <logger name="org.springframework.data.elasticsearch.core" level="debug"/>
 
+       <!-- <logger name="io.seata" level="info" additivity="false" >
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ConsoleApplication" />
+        </logger>-->
+
         <!--log4j2 自带过滤日志-->
         <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
         <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />

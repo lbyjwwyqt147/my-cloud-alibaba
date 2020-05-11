@@ -1,5 +1,7 @@
 package pers.liujunyi.cloud.photo.distribute.service.apportion.impl;
 
+import io.seata.core.context.RootContext;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pers.liujunyi.cloud.common.repository.jpa.BaseJpaRepository;
@@ -24,6 +26,7 @@ import pers.liujunyi.cloud.photo.distribute.service.apportion.OrderApportionServ
  * @version 1.0
  * @author ljy
  */
+@Log4j2
 @Service
 public class OrderApportionServiceImpl extends BaseJpaMongoServiceImpl<OrderApportion, Long> implements OrderApportionService {
 
@@ -40,7 +43,6 @@ public class OrderApportionServiceImpl extends BaseJpaMongoServiceImpl<OrderAppo
         super(baseRepository);
     }
 
-
     @Override
     public ResultInfo saveRecord(OrderApportionDto record) {
         OrderApportion info = new OrderApportion();
@@ -52,11 +54,12 @@ public class OrderApportionServiceImpl extends BaseJpaMongoServiceImpl<OrderAppo
         info.setUserId(1L);
         info.setApportionNumber("110");
         info.setRemarks("测试");
-
+        log.info("事务xid：" + RootContext.getXID());
         OrderApportion saveObj = this.orderApportionRepository.save(info);
         if (saveObj.getId() != null) {
-            this.orderApportionMongoService.save(saveObj);
+          //  this.orderApportionMongoService.save(saveObj);
         }
+       // int i = 0/0;
         return ResultUtil.success();
     }
 

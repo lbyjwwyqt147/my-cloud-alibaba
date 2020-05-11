@@ -20,14 +20,15 @@ import java.util.Date;
  * 文件描述: 用户详细档案信息
  * 公 司:
  * 内容摘要:
- *
+ * hibernate自动创建表时报org.hibernate.AnnotationException: @org.hibernate.annotations.Table references an unknown table:
+ * 需要配置@Entity(name = "UserDetailsInfo" )
  * 完成日期:2019年03月10日
  * 修改记录:
  * @version 1.0
  * @author ljy
  */
 @Data
-@Entity
+@Entity(name = "UserDetailsInfo")
 @NoArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)

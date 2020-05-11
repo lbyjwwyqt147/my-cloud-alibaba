@@ -1,10 +1,20 @@
 package pers.liujunyi.cloud.photo.order.datasource;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import pers.liujunyi.cloud.common.util.BaseConstant;
+
+import javax.persistence.EntityManagerFactory;
+import java.sql.SQLException;
 
 
 /***
@@ -29,10 +39,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class JpaRepositoriesConfig {
 
-    /*@Autowired
-    @Qualifier("dataSource")
-    private DataSource dataSource;*/
-
     /**
      * mongoDb 事物
      * 使用MongoDB 事物首先要配置好副本集,并且提前先创建好集合
@@ -41,10 +47,10 @@ public class JpaRepositoriesConfig {
      * @param factory
      * @return
      */
-   /* @Bean(name = "mongoTransactionManager")
+    @Bean(name = BaseConstant.MONGO_DB_MANAGER)
     PlatformTransactionManager mongoTransactionManager(MongoDbFactory factory){
         return new MongoTransactionManager(factory);
-    }*/
+    }
 
     /**
      * jpa 事物
@@ -52,11 +58,11 @@ public class JpaRepositoriesConfig {
      * @param entityManagerFactory
      * @return
      */
-  /*  @Primary
-    @Bean(name = "transactionManager")
+    @Primary
+    @Bean(name = BaseConstant.TRANSACTION_MANAGER)
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) throws SQLException {
         return new JpaTransactionManager(entityManagerFactory);
     }
-*/
+
 
 }

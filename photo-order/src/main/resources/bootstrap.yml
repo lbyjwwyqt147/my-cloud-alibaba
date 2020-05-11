@@ -30,3 +30,99 @@ spring:
       discovery:
         #指定注册中心的地址，如果你不需要注册该服务，也可以去掉该项，并删除discovery依赖
         server-addr: 127.0.0.1:8848
+
+    alibaba:
+      # Seata 分布式事物
+      seata:
+     #   enabled: true
+     #   enable-auto-data-source-proxy: true
+      #  use-jdk-proxy: false
+        application-id: ${spring.application.name}
+        tx-service-group: my_test_tx_group
+        # 服务配置项
+      #  service:
+          # 虚拟组和分组的映射 1.0.0以上好像将vgroup-mapping 改为 vgroupMapping, 此处是否影响未测试
+      #    vgroupMapping:
+            # 此处Key对应 tx-service-group 的 Value, 此处 value 默认 default
+        #    photo-order: default
+          # 分组和 Seata 服务的映射 默认端口8091
+      #    grouplist:
+         #   default: 127.0.0.1:8091
+
+#================ seata config =======================
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: my_test_tx_group
+  enable-auto-data-source-proxy: true
+  use-jdk-proxy: false
+  excludes-for-auto-proxying: firstClassNameForExclude,secondClassNameForExclude
+  client:
+    rm:
+      async-commit-buffer-limit: 1000
+      report-retry-count: 5
+      table-meta-check-enable: false
+      report-success-enable: false
+      saga-branch-register-enable: false
+      lock:
+        retry-interval: 10
+        retry-times: 30
+        retry-policy-branch-rollback-on-conflict: true
+    tm:
+      commit-retry-count: 5
+      rollback-retry-count: 5
+    undo:
+      data-validation: true
+      log-serialization: jackson
+      log-table: undo_log
+      only-care-update-columns: true
+    log:
+      exceptionRate: 100
+  service:
+    vgroupMapping:
+      my_test_tx_group: default
+    grouplist:
+      default: 127.0.0.1:8091
+    enable-degrade: false
+    disable-global-transaction: false
+  transport:
+    shutdown:
+      wait: 3
+    thread-factory:
+      boss-thread-prefix: NettyBoss
+      worker-thread-prefix: NettyServerNIOWorker
+      server-executor-thread-prefix: NettyServerBizHandler
+      share-boss-worker: false
+      client-selector-thread-prefix: NettyClientSelector
+      client-selector-thread-size: 1
+      client-worker-thread-prefix: NettyClientWorkerThread
+      worker-thread-size: default
+      boss-thread-size: 1
+    type: TCP
+    server: NIO
+    heartbeat: true
+    serialization: seata
+    compressor: none
+    enable-client-batch-send-request: true
+  config:
+    # 使用 nacos 配置中心
+    type: nacos
+    nacos:
+      namespace: public
+      serverAddr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      userName: ""
+      password: ""
+  registry:
+    # 使用 nacos 注册类型，通过nacos 发现 seata-server
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      namespace: public
+      cluster: default
+      userName: ""
+      password: ""
+
+

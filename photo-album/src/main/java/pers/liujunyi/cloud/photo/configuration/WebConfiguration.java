@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
  * 文件描述:
  * 公 司:
  * 内容摘要:
- * 其他说明:
+ * 其他说明: 在一个项目中WebMvcConfigurationSupport只能存在一个，多个的时候，只有一个会生效
  * 完成日期:2019年01月17日
  * 修改记录:
  * @version 1.0

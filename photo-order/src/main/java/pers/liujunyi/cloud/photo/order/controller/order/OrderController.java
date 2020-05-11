@@ -50,7 +50,7 @@ public class OrderController extends BaseController {
     @PostMapping(value = "verify/order/s")
     @ApiVersion(1)
     public ResultInfo saveRecord(@Valid OrderDto param) {
-        return this.orderService.saveRecord(param);
+        return this.orderService.test(param);
     }
 
 

@@ -41,5 +41,6 @@ public interface OrderService extends BaseJpaMongoService<OrderInfo, Long> {
      */
     ResultInfo syncDataToMongo();
 
+    ResultInfo test(OrderDto record);
 
 }
