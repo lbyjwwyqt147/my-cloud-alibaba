@@ -39,25 +39,29 @@ management:
 
 
 data:
-  # 需要签名认证的资源
   sign:
-    matchStart:
-      /centre/api/*/verify/**,
-      /album/api/*/verify/**
+    # 需要签名认证的资源
+    verify:
+      antMatchers:
+        - /centre/api/*/verify/**
+        - /album/api/*/verify/**
   security:
     # 不需要权限认证的资源
-    antMatchers:
-      /oauth/**,
-      /api/*/user/login,
-      /api/user/login,
-      /api/*/out,
-      /api/*/user/out,
-      /api/*/ignore/**,
-      /api/*/table/**,
-      /api/*/tree/**,
-      /favicon.ico,
-      /,
-      /heath
+    ignore:
+      antMatchers:
+        - /
+        - /oauth/**
+        - /api/*/user/login
+        - /api/user/login
+        - /api/*/out
+        - /api/*/user/out
+        - /api/*/ignore/**
+        - /api/*/table/**
+        - /api/*/tree/**
+        - /favicon.ico
+        - /csrf
+        - /error
+        - /heath
 
     # 资源认证服务地址
     user-authorization-uri: http://localhost:${server.port}/centre/
