@@ -295,6 +295,9 @@ dubbo:
 
 security:
   oauth2:
+    authorization:
+      # 当此服务端接收到来自客户端端的请求后，需要拿着请求中的 token 到认证服务端做 token 验证，就是请求的这个接口
+      check-token-access: http://localhost:18848/centre/oauth/check_token
     # 资源配置
     resource:
       # 资源ID
@@ -302,6 +305,17 @@ security:
       #用户端点的URI，用于获取当前用户详细信息
       user-info-uri: http://localhost:18848/centre/api/v1/ignore/user/info
       prefer-token-info: false
+    #客户端 配置
+    client:
+      #指定获取access token的URI
+      access-token-uri: http://localhost:18848/centre/oauth/token
+      #用户跳转去获取access token的URI.
+      user-authorization-uri: http://localhost:18848/centre/oauth/authorize
+      #指定应用册时的client ID
+      client-id: cloud_centre
+      #指定应用册时的client secret
+      client-secret: secret
+
 
 # xxl-job  任务调度执行器配置
 xxl:

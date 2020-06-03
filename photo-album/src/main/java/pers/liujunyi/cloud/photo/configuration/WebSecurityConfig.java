@@ -14,9 +14,10 @@ import pers.liujunyi.cloud.common.util.SystemUtils;
  *
  * @author ljy
  */
-@Configuration
-@EnableWebSecurity
-@Order(2)
+//@Configuration
+//@EnableWebSecurity
+//@Order(2)
+@Deprecated
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /** 不需要权限认证的资源 */
