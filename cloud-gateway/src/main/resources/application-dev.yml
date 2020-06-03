@@ -89,27 +89,6 @@ spring:
 # OAuth2 配置
 security:
   oauth2:
-    #客户端 配置
-    client:
-      #指定获取access token的URI
-      access-token-uri: http://localhost:${server.port}/centre/oauth/token
-      #用户跳转去获取access token的URI.
-      user-authorization-uri: http://localhost:${server.port}/centre/oauth/authorize
-      #指定应用册时的client ID
-      client-id: cloud_centre
-      #指定应用册时的client secret
-      client-secret: secret
-      # 指定应用注册时的重定向地址
-      registered-redirect-uri: https://www.baidu.com
-      pre-established-redirect-uri: https://www.baidu.com
-      # 是否优先使用请求中URI，再使用pre-established的跳转URI. 默认为true
-      use-current-uri: false
-
-    # 资源配置
-    resource:
-      # 资源ID
-      id: resource_id
-      #用户端点的URI，用于获取当前用户详细信息
-      user-info-uri:  http://localhost:${server.port}/centre/api/v1/ignore/user/info
-      #是否使用token info，默认为true
-      prefer-token-info: false
+    authorization:
+      # 当此服务端接收到来自客户端端的请求后，需要拿着请求中的 token 到认证服务端做 token 验证，就是请求的这个接口
+      check-token-access: http://localhost:${server.port}/centre/oauth/check_token
