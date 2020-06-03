@@ -11,6 +11,7 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+    static-path-pattern: /**
 
   # 名称必须配置 服务名称尽量用-，不要用_，不要用特殊字符
   application:
@@ -53,6 +54,11 @@ spring:
     allow-bean-definition-overriding: true
 
 
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
   # 使用 swagger 如果字段的类型为Long或是int类型 后台会报java.lang.NumberFormatException: For input string: ""；忽略这个错误
 logging:
   level:
@@ -74,14 +80,18 @@ feign:
   sentinel:
     enabled: true
 
+
 data:
   security:
     # 不需要权限认证的资源
     ignore:
       antMatchers:
         - /
+        - /js/**
         - /oauth/**
+        - /login
         - /api/*/user/login
+        - /api/*/oauth/user/login
         - /api/user/login
         - /api/*/out
         - /api/*/user/out

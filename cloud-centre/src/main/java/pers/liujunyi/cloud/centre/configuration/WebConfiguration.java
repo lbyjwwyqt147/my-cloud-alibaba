@@ -6,6 +6,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -67,4 +68,16 @@ public class WebConfiguration extends WebMvcConfigurationSupport {
         }
     }
 
+
+    /**
+     * 注册页面调整路径
+     * @param registry
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        // 登录页面
+        registry.addViewController("/login").setViewName("login");
+        // 因为AuthorizationServer 配置了.autoApprove(true) 为true 则不会被重定向到授权的页面，也不需要手动给请求授权,直接自动授权成功返回code
+       // registry.addViewController("/oauth/confirm_access").setViewName("oauth_approval");
+    }
 }

@@ -220,7 +220,7 @@ public class UserDetailsInfoController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "version", value = "版本号", paramType = "path",  dataType = "String", defaultValue = "v1"),
     })
-    @GetMapping(value = "ignore/authority/authentication")
+    @GetMapping(value = "authority/authentication")
     @ApiVersion(1)
     public ResultInfo isAuthenticated(String token, String requestUrl) {
         ResultInfo resultInfo = ResultUtil.success();
@@ -244,6 +244,19 @@ public class UserDetailsInfoController extends BaseController {
         ResultInfo resultInfo = ResultUtil.success();
         resultInfo.setData(this.userAuthService.getUserDetails(token));
         return resultInfo;
+    }
+
+    @GetMapping(value = "verify/staff/id")
+    @ApiVersion(1)
+    public ResultInfo test(Long id) {
+       // new OAuth2AuthenticationProcessingFilter()
+        return ResultUtil.success();
+    }
+
+    @GetMapping(value = "verify/abc/id")
+    @ApiVersion(1)
+    public ResultInfo sac(Long id) {
+        return ResultUtil.success();
     }
 
     /**

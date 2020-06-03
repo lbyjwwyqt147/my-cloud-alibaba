@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import pers.liujunyi.cloud.centre.api.domain.dto.UserDetailsInfoDto;
@@ -50,6 +52,12 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Override
     public Boolean isAuthenticated(String token, String requestUrl) {
+        // 获取当前人员权限
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Object principal = securityContext.getAuthentication().getPrincipal();
+        if (principal instanceof String) {
+            return true;
+        }
         // 加载资源配置对象
         this.loadResourceDefine();
         AtomicInteger index = new AtomicInteger(requestUrl.indexOf("v", 1));

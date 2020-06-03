@@ -21,6 +21,7 @@ import org.springframework.web.context.request.RequestContextListener;
 import pers.liujunyi.cloud.centre.util.SentinelExceptionHandler;
 import pers.liujunyi.cloud.common.configuration.MySQLUpperCaseStrategy;
 import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
+import pers.liujunyi.cloud.common.exception.GlobalExceptionHandler;
 
 /***
  * exclude = DataSourceAutoConfiguration.class 解决 ：Consider defining a bean of type 'javax.sql.DataSource' in your configuration.
@@ -36,7 +37,7 @@ import pers.liujunyi.cloud.common.encrypt.annotation.EnableEncrypt;
 @EnableJpaAuditing
 @EnableConfigurationProperties
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {"pers.liujunyi.cloud"}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {MySQLUpperCaseStrategy.class}))
+@ComponentScan(basePackages = {"pers.liujunyi.cloud"}, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {MySQLUpperCaseStrategy.class, GlobalExceptionHandler.class}))
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class})
 public class CentreApplication {
 
